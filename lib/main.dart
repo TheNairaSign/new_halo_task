@@ -4,8 +4,6 @@ import 'package:new_halo_task/pages/auth_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
 
-import 'package:new_halo_task/pages/login_page.dart';
-import 'package:new_halo_task/pages/signup_page.dart';
 import 'package:new_halo_task/themes/themes.dart';
 
 void main(List<String> args) async {

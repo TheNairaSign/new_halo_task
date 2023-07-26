@@ -7,7 +7,7 @@ import 'package:new_halo_task/widgets/input_field.dart';
 import 'package:new_halo_task/widgets/text_button.dart';
 
 class UserLoginPage extends StatefulWidget {
-  UserLoginPage({
+  const UserLoginPage({
     super.key,
   });
 

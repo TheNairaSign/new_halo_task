@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:new_halo_task/pages/user_login.dart';
 
@@ -53,7 +51,7 @@ class SignUpPage extends StatelessWidget {
     else {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) =>  UserLoginPage(),
+          builder: (context) =>  const UserLoginPage(),
         ),
       );
     }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:new_halo_task/pages/signup_page.dart';
-import 'package:new_halo_task/pages/user_login.dart';
 import 'package:new_halo_task/widgets/text_button.dart';
 
 class LoginPage extends StatelessWidget {
