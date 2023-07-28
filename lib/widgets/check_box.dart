@@ -7,6 +7,7 @@ class CheckedBox extends StatefulWidget {
   State<CheckedBox> createState() => CheckedBoxState();
 }
 class CheckedBoxState extends State<CheckedBox> {
+  bool tapped = false;
   @override
   Widget build(BuildContext context) {
         return CheckboxListTile(

@@ -1,7 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:flutter/material.dart';
-import 'package:new_halo_task/pages/signup_page.dart';
 import 'package:new_halo_task/widgets/check_box.dart';
 import 'package:new_halo_task/widgets/input_field.dart';
 import 'package:new_halo_task/widgets/text_button.dart';
@@ -15,31 +14,40 @@ class UserLoginPage extends StatefulWidget {
   State<UserLoginPage> createState() => _UserLoginPageState();
 }
 
+
 class _UserLoginPageState extends State<UserLoginPage> {
   // final bool pasteDetails = false;
-  final loginEmailController = TextEditingController();
-  final loginPasswordController = TextEditingController();
+  final _loginEmailController = TextEditingController();
+  final _loginPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _loginEmailController;
+    _loginPasswordController;
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   void signIn() async {
-    showDialog(context: context, builder: (context) {
-      return const Center (
-        child: CircularProgressIndicator(
-          color: Colors.pink,
-        ),
-      );
-    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.pink,
+            ),
+          );
+        });
     try {
-
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: loginEmailController.text,
-      password: loginPasswordController.text,
-    );
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _loginEmailController.text,
+        password: _loginPasswordController.text,
+      );
     } on FirebaseAuthException catch (e) {
       // print(e);
       if (e.code == "user-not-found") {
         Navigator.of(context).pop();
-      }
-      else {
+      } else {
         print(e);
       }
     }
@@ -47,8 +55,8 @@ class _UserLoginPageState extends State<UserLoginPage> {
   }
 
   void checkEntry(BuildContext context) {
- if (loginEmailController.text.isEmpty ||
-        loginPasswordController.text.isEmpty) {
+    if (_loginEmailController.text.isEmpty ||
+        _loginPasswordController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -69,7 +77,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
     } else {
       signIn();
     }
-      print("Login tapped");
+    print("Login tapped");
     return;
   }
 
@@ -93,21 +101,18 @@ class _UserLoginPageState extends State<UserLoginPage> {
                 height: 50,
               ),
               InputField(
-                key: ValueKey(emailController),
-                fillColor: const Color.fromARGB(116, 158, 158, 158),
-                hintText: "Email",
-                hintTextColor: Colors.grey[600],
-                prefixIcon: Icons.mail_rounded,
-                iconColor: Colors.grey[600],
-                textColor: Theme.of(context).iconTheme.color,
-                obscureText: false,
-                controller: loginEmailController
-              ),
+                  fillColor: const Color.fromARGB(116, 158, 158, 158),
+                  hintText: "Email",
+                  hintTextColor: Colors.grey[600],
+                  prefixIcon: Icons.mail_rounded,
+                  iconColor: Colors.grey[600],
+                  textColor: Theme.of(context).iconTheme.color,
+                  obscureText: false,
+                  controller: _loginEmailController),
               const SizedBox(
                 height: 20,
               ),
               InputField(
-                key: ValueKey(passwordController),
                 fillColor: const Color.fromARGB(116, 158, 158, 158),
                 hintText: "Password",
                 hintTextColor: Colors.grey[600],
@@ -115,7 +120,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
                 iconColor: Colors.grey[600],
                 textColor: Theme.of(context).iconTheme.color,
                 obscureText: true,
-                controller: loginPasswordController
+                controller: _loginPasswordController,
               ),
               const CheckedBox(),
               PinkTextButton(

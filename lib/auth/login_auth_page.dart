@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:new_halo_task/pages/dashboard.dart';
 import 'package:new_halo_task/pages/user_login.dart';
 
-class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+class LoginAuth extends StatelessWidget {
+  const LoginAuth({super.key});
 
   @override
   Widget build(BuildContext context) {

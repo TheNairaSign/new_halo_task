@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:new_halo_task/pages/auth_page.dart';
+
+import 'package:new_halo_task/auth/signup_auth_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
 
@@ -20,7 +21,7 @@ class NewHaloTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AuthPage(),
+      home: const SignUpAuth(),
       theme: lightTheme,
       darkTheme: darkTheme,
     );

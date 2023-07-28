@@ -1,18 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:new_halo_task/pages/user_login.dart';
 
 import 'package:new_halo_task/themes/themes.dart';
 import 'package:new_halo_task/widgets/check_box.dart';
 import 'package:new_halo_task/widgets/input_field.dart';
 import 'package:new_halo_task/widgets/text_button.dart';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key, required this.showSignUpPage});
+  final VoidCallback showSignUpPage;
 
-  void correctText(BuildContext context) {
-    if (usernameController.text.isEmpty ||
-        emailController.text.isEmpty ||
-        passwordController.text.isEmpty) {
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool tapped = false;
+
+  @override
+  void dispose() {
+    _usernameController;
+    _emailController;
+    _passwordController;
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  Future signUp() async {
+    if (_usernameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -44,18 +63,7 @@ class SignUpPage extends StatelessWidget {
           ),
         ),
       );
-    } 
-    // else if(usernameController.text.contains(RegExp("A-Z")) ) {
-    //   print("Cannot contain x, y or z");
-    // }
-    else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) =>  const UserLoginPage(),
-        ),
-      );
     }
-    return;
   }
 
   @override
@@ -91,7 +99,7 @@ class SignUpPage extends StatelessWidget {
                 iconColor: Colors.grey[600],
                 textColor: Theme.of(context).iconTheme.color,
                 obscureText: false,
-                controller: usernameController,
+                controller: _usernameController,
               ),
               const SizedBox(
                 height: 20,
@@ -104,7 +112,7 @@ class SignUpPage extends StatelessWidget {
                 iconColor: Colors.grey[600],
                 textColor: Theme.of(context).iconTheme.color,
                 obscureText: false,
-                controller: emailController,
+                controller: _emailController,
               ),
               const SizedBox(
                 height: 20,
@@ -112,19 +120,16 @@ class SignUpPage extends StatelessWidget {
               InputField(
                 fillColor: const Color.fromARGB(116, 158, 158, 158),
                 hintText: "Password",
-                hintTextColor:Colors.grey[600],
+                hintTextColor: Colors.grey[600],
                 prefixIcon: Icons.lock,
                 iconColor: Colors.grey[600],
                 textColor: Theme.of(context).iconTheme.color,
                 obscureText: tapped == false ? true : true,
-                controller: passwordController,
+                controller: _passwordController,
               ),
               const CheckedBox(),
               PinkTextButton(
-                onPressed: () {
-                  correctText(context);
-                  // signIn();
-                },
+                onPressed: signUp,
                 buttonContent: "Sign up",
               ),
             ],
@@ -134,8 +139,3 @@ class SignUpPage extends StatelessWidget {
     );
   }
 }
-
-TextEditingController usernameController = TextEditingController(text: "tonye");
-TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
-bool tapped = false;

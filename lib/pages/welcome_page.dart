@@ -81,14 +81,14 @@ class _WelcomePageState extends State<WelcomePage> {
       height: 45,
       child: TextButton(
         onPressed: () {
-          if (currentIndex == welcomeModel.length - 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (ctx) => const LoginPage(),
-              ),
-            );
-          }
+          // if (currentIndex == welcomeModel.length - 1) {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (ctx) => const LoginPage(),
+          //     ),
+          //   );
+          // }
           _controller.nextPage(
             duration: const Duration(milliseconds: 100),
             curve: Curves.bounceIn,

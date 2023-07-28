@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:new_halo_task/pages/signup_page.dart';
+import 'package:new_halo_task/pages/user_login.dart';
 import 'package:new_halo_task/widgets/text_button.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  const LoginPage({super.key, required this.showLoginPage});
+  final VoidCallback showLoginPage;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +87,7 @@ class LoginPage extends StatelessWidget {
           // const Spacer(),
           PinkTextButton(
             onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const UserLoginPage()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  const UserLoginPage()));
             },
             buttonContent: "Sign In with password",
           ),
@@ -107,7 +109,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 onPressed: () {
                   print("Sign up");
-                  Navigator.of(context).push(MaterialPageRoute(builder: ((context) => const SignUpPage())));
+                  Navigator.of(context).push(MaterialPageRoute(builder: ((context) => SignUpPage(showSignUpPage: () {},))));
                 },
                 child: const Text(
                   "Sign up",
