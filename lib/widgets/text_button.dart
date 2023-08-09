@@ -18,14 +18,17 @@ class PinkTextButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: ButtonStyle(
-            splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
-            mouseCursor: MaterialStateMouseCursor.clickable,
-            backgroundColor: MaterialStateProperty.all(
-              Colors.pink,
-            )),
+          splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
+          mouseCursor: MaterialStateMouseCursor.clickable,
+          backgroundColor: MaterialStateProperty.all(
+            Colors.pink,
+          ),
+        ),
         child: Text(
           buttonContent,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(
+            color: Colors.white,
+          ),
         ),
       ),
     );

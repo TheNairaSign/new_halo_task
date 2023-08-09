@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:new_halo_task/components/alert_dialog.dart';
 
-import 'package:new_halo_task/themes/themes.dart';
 import 'package:new_halo_task/widgets/check_box.dart';
 import 'package:new_halo_task/widgets/input_field.dart';
 import 'package:new_halo_task/widgets/text_button.dart';
@@ -34,33 +34,8 @@ class _SignUpPageState extends State<SignUpPage> {
         _passwordController.text.isEmpty) {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 1,
-          actions: [
-            TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide.none,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                "Okay",
-                style: TextStyle(
-                  color: primaryColor,
-                ),
-              ),
-            ),
-          ],
-          content: Text(
-            "TextFields must not be empty",
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
+        builder: (context) => const MyAlertDialog(
+          contentText: "TextFields must not be empty",
         ),
       );
     }
@@ -127,7 +102,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: tapped == false ? true : true,
                 controller: _passwordController,
               ),
-              const CheckedBox(),
+              const CheckedBox(text: "Remember Me",),
               PinkTextButton(
                 onPressed: signUp,
                 buttonContent: "Sign up",

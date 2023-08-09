@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_halo_task/themes/date_picker_theme.dart';
 
 Color primaryColor = Colors.pink;
 
@@ -16,6 +17,9 @@ ThemeData lightTheme = ThemeData.light().copyWith(
     headlineLarge: TextStyle(
       color: Colors.black,
     ),
+    headlineMedium: TextStyle(
+      color: Colors.black,
+    ),
     bodyLarge: TextStyle(
       color: Colors.black,
     ),
@@ -26,6 +30,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   iconTheme: const IconThemeData(
     color: Colors.black
   ),
+  datePickerTheme: datePickerTheme,
 );
 
 ThemeData darkTheme = ThemeData.dark().copyWith(
@@ -39,6 +44,9 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
     headlineLarge: TextStyle(
       color: Colors.white,
     ),
+    headlineMedium: TextStyle(
+      color: Colors.white,
+    )
   ),
   cardTheme: const CardTheme(
     color: Color.fromARGB(134, 33, 33, 33),
@@ -46,4 +54,5 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   dividerTheme: const DividerThemeData(
     color: Colors.white,
   ),
+  datePickerTheme: datePickerTheme
 );

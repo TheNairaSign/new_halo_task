@@ -38,26 +38,29 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(
-              height: 500,
-              child: pageView(),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                welcomeModel.length,
-                (index) => buildDot(index, context),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.sizeOf(context).height,
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: 500,
+                child: pageView(),
               ),
-            ),
-            // const Spacer(),
-            nextButton(currentIndex),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  welcomeModel.length,
+                  (index) => buildDot(index, context),
+                ),
+              ),
+              nextButton(currentIndex),
+            ],
+          ),
         ),
       ),
     );
@@ -81,14 +84,14 @@ class _WelcomePageState extends State<WelcomePage> {
       height: 45,
       child: TextButton(
         onPressed: () {
-          // if (currentIndex == welcomeModel.length - 1) {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (ctx) => const LoginPage(),
-          //     ),
-          //   );
-          // }
+          if (currentIndex == welcomeModel.length - 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => LoginPage(showLoginPage: () {},),
+              ),
+            );
+          }
           _controller.nextPage(
             duration: const Duration(milliseconds: 100),
             curve: Curves.bounceIn,
@@ -141,8 +144,8 @@ class _WelcomePageState extends State<WelcomePage> {
                 child: Text(
                   welcomeModel[i].description,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                     fontWeight: FontWeight.bold,
                     fontSize: 35,
                   ),

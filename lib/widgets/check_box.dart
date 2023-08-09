@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:new_halo_task/pages/signup_page.dart';
 
 class CheckedBox extends StatefulWidget {
-  const CheckedBox({super.key});
+  const CheckedBox({super.key, required this.text});
+  final String text;
   @override
   State<CheckedBox> createState() => CheckedBoxState();
 }
@@ -13,7 +13,7 @@ class CheckedBoxState extends State<CheckedBox> {
         return CheckboxListTile(
       splashRadius: 0,
       visualDensity: VisualDensity.compact,
-        contentPadding: const EdgeInsets.only(left: 85, right: 85),
+        contentPadding: const EdgeInsets.only(left: 70, right: 0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
         side: const BorderSide(
           color: Colors.pink,
@@ -26,8 +26,8 @@ class CheckedBoxState extends State<CheckedBox> {
         ),
         checkColor: Colors.white,
         title: Text(
-          "Remember me",
-          style: Theme.of(context).textTheme.bodyLarge,
+          widget.text,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color:Colors.black),
         ),
         value: tapped,
         onChanged: (value) {

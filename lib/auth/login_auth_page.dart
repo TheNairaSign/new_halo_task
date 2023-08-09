@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:new_halo_task/pages/dashboard.dart';
+import 'package:new_halo_task/dashboard/dashboard.dart';
 import 'package:new_halo_task/pages/user_login.dart';
 
 class LoginAuth extends StatelessWidget {
