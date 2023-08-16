@@ -1,33 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:new_halo_task/components/alert_dialog.dart';
 import 'package:new_halo_task/notes/colored_container.dart';
+import 'package:new_halo_task/models/note_model.dart';
 import 'package:new_halo_task/themes/themes.dart';
 
 class NotesContainer extends StatefulWidget {
-  const NotesContainer({super.key, required this.titleController, required this.bodyController, required this.onSubmitNotes,});
+  const NotesContainer(
+      {super.key,
+      required this.titleController,
+      required this.bodyController,
+      required this.notes,required this.onAddNote,
+      });
 
   final TextEditingController titleController;
   final TextEditingController bodyController;
-  final void Function() onSubmitNotes;
+  final List<NoteModel> notes;
+  final void Function(NoteModel note) onAddNote;
 
   @override
   State<NotesContainer> createState() => _NotesContainerState();
 }
 
 class _NotesContainerState extends State<NotesContainer> {
-   Color containerColor = Colors.white; // Set an initial color
+  Color containerColor = Colors.white; // Set an initial color
   List<Color> colorList = const [
+    Colors.white,
+    Color(0xffEEEBD3),
+    Color(0xff45503B),
+    Color(0xffBFD1E5),
+    Color(0xffFE5F55),
+  ];
+  List<Color> colorList2 = const [
     Colors.white,
     Color.fromARGB(255, 243, 229, 107),
     Color.fromARGB(190, 32, 176, 162),
     Color.fromARGB(162, 239, 88, 139),
     Color.fromARGB(255, 104, 141, 204),
   ];
+
+  void onAdd() {
+    if (widget.titleController.text.isEmpty || widget.bodyController.text.isEmpty) {
+      showDialog(context: context, builder: (context) {
+        return const MyAlertDialog(contentText: "TextFields cannot be empty");
+      });
+    } else {
+      widget.onAddNote(
+        NoteModel(
+        bodyText: widget.bodyController.text,
+        title: widget.titleController.text,
+        date: DateTime.now(),
+        noteColor: containerColor, // Store the selected color for the note
+      ),);
+      widget.titleController.clear();
+      widget.bodyController.clear();
+      containerColor = Colors.white; // Reset the container color to white after adding the note
+  }
+  }
   void updateContainerColor(Color color) {
     setState(() {
       containerColor = color;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -150,7 +185,9 @@ class _NotesContainerState extends State<NotesContainer> {
         ),
         const Spacer(),
         OutlinedButton.icon(
-          onPressed: widget.onSubmitNotes,
+          onPressed: () {
+            onAdd();
+          },
           icon: Icon(
             Icons.add,
             size: 25,
@@ -168,4 +205,4 @@ class _NotesContainerState extends State<NotesContainer> {
       ],
     );
   }
-  }
+}

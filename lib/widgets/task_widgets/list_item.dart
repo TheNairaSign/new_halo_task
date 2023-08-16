@@ -56,7 +56,7 @@ class _TasksItemState extends State<TasksItem> {
                   GestureDetector(
                     onTap: () {
                       print("Delete task");
-onDeleteTask(widget.task);
+                      onDeleteTask(widget.task);
                     } ,
                     child: const Icon(
                       Icons.delete,
@@ -156,7 +156,6 @@ onDeleteTask(widget.task);
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  // themeData == lightTheme? Colors.green : Colors.white
                   Colors.transparent,
                 ),
               ),
