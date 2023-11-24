@@ -43,10 +43,25 @@ dependencies:
   uuid: ^3.0.7
   intl: ^0.18.1
   flutter_riverpod: ^2.3.6
+  flutter_login_facebook: ^1.8.0
+  google_sign_in: ^6.1.4
+  shared_preferences: ^2.2.0
+  provider: ^6.0.5
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  cloud_firestore: ^4.9.1
+  animated_text_kit: ^4.2.2
+  flutter_form_builder: ^9.1.0
+  form_builder_validators: ^9.0.0
+  googleapis: ^11.4.0
+  googleapis_auth: ^1.4.1
+  # flutter_facebook_auth: ^6.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.6
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -69,6 +84,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/svg/
+    - assets/svg/snackBar/
     - assets/socials/
 
   # An image asset can refer to one or more resolution-specific "variants", see

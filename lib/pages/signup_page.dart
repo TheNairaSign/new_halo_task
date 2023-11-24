@@ -1,116 +1,96 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:new_halo_task/components/alert_dialog.dart';
+import 'package:provider/provider.dart';
 
+import 'package:new_halo_task/provider/auth_providers/sign_up_provider.dart';
+import 'package:new_halo_task/themes/themes.dart';
 import 'package:new_halo_task/widgets/check_box.dart';
-import 'package:new_halo_task/widgets/input_field.dart';
-import 'package:new_halo_task/widgets/text_button.dart';
+import 'package:new_halo_task/widgets/pink_text_button.dart';
+import 'package:new_halo_task/widgets/text_fields/input_field.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key, required this.showSignUpPage});
-  final VoidCallback showSignUpPage;
+  const SignUpPage({super.key});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool tapped = false;
-
-  @override
-  void dispose() {
-    _usernameController;
-    _emailController;
-    _passwordController;
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  Future signUp() async {
-    if (_usernameController.text.isEmpty ||
-        _emailController.text.isEmpty ||
-        _passwordController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) => const MyAlertDialog(
-          contentText: "TextFields must not be empty",
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        scrolledUnderElevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text(
-                "Create your Account",
-                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                      fontSize: 45,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).textTheme.headlineLarge!.color,
-                    ),
-                textAlign: TextAlign.start,
-                softWrap: true,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              InputField(
-                fillColor: const Color.fromARGB(116, 158, 158, 158),
-                hintText: "Username",
-                hintTextColor: Colors.grey[600],
-                prefixIcon: Icons.person,
-                iconColor: Colors.grey[600],
-                textColor: Theme.of(context).iconTheme.color,
-                obscureText: false,
-                controller: _usernameController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InputField(
-                fillColor: const Color.fromARGB(116, 158, 158, 158),
-                hintText: "Email",
-                hintTextColor: Colors.grey[600],
-                prefixIcon: Icons.mail,
-                iconColor: Colors.grey[600],
-                textColor: Theme.of(context).iconTheme.color,
-                obscureText: false,
-                controller: _emailController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              InputField(
-                fillColor: const Color.fromARGB(116, 158, 158, 158),
-                hintText: "Password",
-                hintTextColor: Colors.grey[600],
-                prefixIcon: Icons.lock,
-                iconColor: Colors.grey[600],
-                textColor: Theme.of(context).iconTheme.color,
-                obscureText: tapped == false ? true : true,
-                controller: _passwordController,
-              ),
-              const CheckedBox(text: "Remember Me",),
-              PinkTextButton(
-                onPressed: signUp,
-                buttonContent: "Sign up",
-              ),
-            ],
+    return Consumer<SignUpProvider>(
+      builder: (ctx, signUpProv, child) {
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            scrolledUnderElevation: 0,
           ),
-        ),
-      ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Create your Account",
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                          fontSize: 45,
+                          fontWeight: FontWeight.w500,
+                          color:
+                              Theme.of(context).textTheme.headlineLarge!.color,
+                        ),
+                    textAlign: TextAlign.start,
+                    softWrap: true,
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SignUpInputField(
+                    globalKey: signUpProv.globalKey,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CheckedBox(
+                    text: "Remember Me",
+                    onChecked: (value) {},
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  PinkTextButton(
+                    onPressed: () {
+                      signUpProv.signUp(context);
+                    },
+                    buttonContent: "Sign up",
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Already a user?",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            color: primaryColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

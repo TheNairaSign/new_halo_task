@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:new_halo_task/widgets/drawer.dart';
 import 'package:new_halo_task/dashboard/appbar.dart';
 import 'package:new_halo_task/notes/note_builder.dart';
-import 'package:new_halo_task/widgets/drawer.dart';
 
 class Notes extends StatelessWidget {
   const Notes({super.key});

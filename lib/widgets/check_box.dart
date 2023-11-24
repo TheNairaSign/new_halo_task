@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+
+import 'package:new_halo_task/themes/themes.dart';
 
 class CheckedBox extends StatefulWidget {
-  const CheckedBox({super.key, required this.text});
+  const CheckedBox({super.key, required this.text, required this.onChecked});
   final String text;
+  final void Function(bool value) onChecked;
   @override
   State<CheckedBox> createState() => CheckedBoxState();
 }
@@ -10,30 +14,27 @@ class CheckedBoxState extends State<CheckedBox> {
   bool tapped = false;
   @override
   Widget build(BuildContext context) {
-        return CheckboxListTile(
-      splashRadius: 0,
-      visualDensity: VisualDensity.compact,
+    return FormBuilderCheckbox(
+      name: "",
         contentPadding: const EdgeInsets.only(left: 70, right: 0),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-        side: const BorderSide(
-          color: Colors.pink,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+          ),
+        side: BorderSide(
+          color: primaryColor,
           width: 2,
         ),
-        activeColor: Colors.pink,
+        activeColor: primaryColor,
         controlAffinity: ListTileControlAffinity.leading,
-        checkboxShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
         checkColor: Colors.white,
         title: Text(
           widget.text,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(color:Colors.black),
         ),
-        value: tapped,
         onChanged: (value) {
           setState(() {
             tapped = value!;
-            // TODO: Create a function to accept the tap on the individual checkboxes
+            widget.onChecked(value);
           });
         });
   }

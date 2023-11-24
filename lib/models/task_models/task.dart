@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
@@ -12,22 +13,38 @@ enum Category {
 }
 
 const categoryIcons = {
-  Category.important : Icons.notifications_none_rounded,
+  Category.important: Icons.notifications_none_rounded,
 };
 
-class Task {
-  final String id, taskName, description;
+@HiveType(typeId: 0)
+class Task extends HiveObject {
+  @HiveField(0)
+  final String id;
+
+  @HiveField(1)
+  final String taskName;
+  
+  @HiveField(2)
+  final String description;
+  
+  @HiveField(3)
   final DateTime date;
-  final Category category;
+
+  @HiveField(4)
+  bool isCompleted;
+
+  @HiveField(5)
+  bool isImportant;
 
   Task({
     required this.taskName,
     required this.description,
     required this.date,
-    required this.category
+    this.isCompleted = false,
+    this.isImportant = false,
   }) : id = uuid.v4();
 
-  String get formattedDate  {
+  String get formattedDate {
     return formatter.format(date);
   }
 }

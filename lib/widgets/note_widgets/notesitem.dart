@@ -1,23 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-import 'package:new_halo_task/models/note_model.dart';
-import 'package:new_halo_task/widgets/note_widgets/favorite_button.dart';
+import 'package:new_halo_task/models/note_model/note_model.dart';
+import 'package:new_halo_task/provider/note_provider.dart';
 
 class NotesItem extends StatefulWidget {
   const NotesItem({
     Key? key,
     required this.notes,
     required this.index,
-    required this.deleteNote,
-    required this.onFaveTap,
+    required this.removeNote,
   }) : super(key: key);
-   final List<NoteModel> notes;
-   final int index;
-   final void Function(NoteModel noteModel) deleteNote;
-   final void Function() onFaveTap;
-
+  final List<NoteModel> notes;
+  final int index;
+  final void Function() removeNote;
 
   @override
   State<NotesItem> createState() => _NotesItemState();
@@ -26,10 +24,10 @@ class NotesItem extends StatefulWidget {
 class _NotesItemState extends State<NotesItem> {
   final formatter = DateFormat.yMMMd();
   DateTime date = DateTime.now();
-    String get formattedDate {
+  String get formattedDate {
     return formatter.format(date);
   }
-  
+
   final Border _border = const Border(
     bottom: BorderSide(
       color: Colors.grey,
@@ -46,7 +44,7 @@ class _NotesItemState extends State<NotesItem> {
   );
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       padding: const EdgeInsets.all(25),
       width: double.infinity,
       margin: const EdgeInsets.all(20),
@@ -63,7 +61,6 @@ class _NotesItemState extends State<NotesItem> {
             children: [
               Expanded(
                 child: Text(
-                  maxLines: 2,
                   widget.notes[widget.index].title,
                   style: const TextStyle(
                     color: Colors.black,
@@ -75,13 +72,19 @@ class _NotesItemState extends State<NotesItem> {
               // const Spacer(),
               GestureDetector(
                 onTap: () {
-                  widget.deleteNote(widget.notes[widget.index]);
+                  widget.removeNote();
                 },
-                child: const Icon(Icons.delete_forever, size: 25),
+                child: Icon(
+                  Icons.close,
+                  size: 25,
+                  color: Colors.grey[700],
+                ),
               ),
             ],
           ),
-          const Divider(),
+          Divider(
+            color: Colors.grey[700],
+          ),
           Text(
             widget.notes[widget.index].bodyText,
             style: const TextStyle(
@@ -101,7 +104,19 @@ class _NotesItemState extends State<NotesItem> {
                 ),
               ),
               const Spacer(),
-              FavoriteButton(onStarTap: widget.onFaveTap,)
+
+              // This button should add notes to the favorite screen when tapped
+              IconButton(
+                icon: Icon(
+                  widget.notes[widget.index].isFavorite
+                      ? Icons.star
+                      : Icons.star_outline,
+                ),
+                onPressed: () {
+                  final noteProvider = context.read<NoteProvider>();
+                  noteProvider.toggleStar(widget.notes[widget.index]);
+                },
+              ),
             ],
           ),
         ],

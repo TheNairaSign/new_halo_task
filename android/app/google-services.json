@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "806306911425",
-    "project_id": "new-halo-task",
-    "storage_bucket": "new-halo-task.appspot.com"
+    "project_number": "139398389507",
+    "project_id": "halo-74f17",
+    "storage_bucket": "halo-74f17.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:806306911425:android:28a56a4c38d841993c7040",
+        "mobilesdk_app_id": "1:139398389507:android:314a38fc73bab256511336",
         "android_client_info": {
           "package_name": "com.example.new_halo_task"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "806306911425-o74mrngeumfndae3tmbkrssjmff7rv4a.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC-5-rl-OID1CJbJYfghHw9KX3TsPgvFCw"
+          "current_key": "AIzaSyDoRn9HFYjRpug9W6T3j76Cc_DqOcT-yu4"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "806306911425-o74mrngeumfndae3tmbkrssjmff7rv4a.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

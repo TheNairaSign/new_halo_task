@@ -18,8 +18,7 @@ class TaskCategory extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).pop();
-          onTap;
+          onTap();
         },
         child: Row(
           children: [

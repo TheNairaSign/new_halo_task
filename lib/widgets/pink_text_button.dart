@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_halo_task/themes/themes.dart';
 
 class PinkTextButton extends StatelessWidget {
   const PinkTextButton({
@@ -18,10 +19,11 @@ class PinkTextButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all(Colors.pink[400]),
           splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
           mouseCursor: MaterialStateMouseCursor.clickable,
           backgroundColor: MaterialStateProperty.all(
-            Colors.pink,
+            primaryColor
           ),
         ),
         child: Text(

@@ -1,12 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:new_halo_task/dashboard/dashboard.dart';
-import 'package:new_halo_task/notes/notes.dart';
 import 'package:new_halo_task/models/task_models/task_category.dart';
-import 'package:new_halo_task/pages/sub_pages/starred_notes.dart';
+import 'package:new_halo_task/notes/notes.dart';
+import 'package:new_halo_task/pages/sub_pages/completed_tasks.dart';
+import 'package:new_halo_task/pages/sub_pages/favorites_page.dart';
+import 'package:new_halo_task/pages/sub_pages/important_tasks.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
+  const MyDrawer({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +46,12 @@ class MyDrawer extends StatelessWidget {
             "Tasks",
             () {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const Dashboard()));
+                MaterialPageRoute(
+                  builder: (context) => const Dashboard(),
+                ),
+              );
             },
-            Icons.checklist_outlined,
+            Icons.format_list_bulleted,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -51,7 +60,12 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.notifications_none_outlined,
                 text: "Important",
                 onTap: () {
-                  // print("Important");
+                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => const ImportantTasks()),
+                    ),
+                  );
                 },
               ),
               TaskCategory(
@@ -65,7 +79,12 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.check,
                 text: "Completed",
                 onTap: () {
-                  // print("Completed");
+                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const CompletedTasks(),
+                    ),
+                  );
                 },
               ),
             ],
@@ -91,8 +110,12 @@ class MyDrawer extends StatelessWidget {
             icon: Icons.star_border,
             text: "Starred Notes",
             onTap: () {
+              debugPrint("StarredNotes");
               Navigator.pop(context);
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => const StarredNotes()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const StarredNotes()));
             },
           ),
         ],

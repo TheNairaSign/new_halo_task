@@ -1,36 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
 import 'package:new_halo_task/models/task_models/task.dart';
+import 'package:new_halo_task/provider/task_provider.dart';
 import 'package:new_halo_task/themes/themes.dart';
 
 class TasksItem extends StatefulWidget {
-  const TasksItem(this.task, {super.key});
+  const TasksItem(this.task, {super.key, required this.index, required this.removeNote});
 
-  final Task task;
+  final List<Task> task;
+  final int index;
+  final void Function() removeNote;
 
   @override
   State<TasksItem> createState() => _TasksItemState();
 }
 
 class _TasksItemState extends State<TasksItem> {
-  final List<Task> tasks = [];
-
-  void onDeleteTask(Task task) {
-    setState(() {
-      tasks.remove(task);
-    });
-  }
-
-  void completedTasks(Task completedTasks) {
-    setState(() {
-      tasks.add(completedTasks);
-    });
-  }
-
-  bool completed = false;
 
   @override
   Widget build(BuildContext context) {
+  final task = widget.task[widget.index];
+  final completed = task.isCompleted;
+  final important = task.isImportant;
+  final taskP = context.read<TaskProvider>();
+
     return SizedBox(
       height: 170,
       child: Card(
@@ -55,12 +50,11 @@ class _TasksItemState extends State<TasksItem> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      print("Delete task");
-                      onDeleteTask(widget.task);
+                      taskP.deleteAction(context, task, widget.index);
                     } ,
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.grey,
+                    child: Icon(
+                      Icons.close,
+                      color: completed == true ? Colors.black : Colors.grey,
                       size: 17,
                     ),
                   ),
@@ -69,13 +63,13 @@ class _TasksItemState extends State<TasksItem> {
               Row(
                 children: [
                   Text(
-                    widget.task.taskName,
+                    task.taskName,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: Colors.teal,
                         ),
                   ),
                   Icon(
-                    categoryIcons[widget.task.category],
+                    important == true ? Icons.notifications : Icons.pending,
                     size: 13,
                     color: Colors.black,
                   ),
@@ -85,10 +79,9 @@ class _TasksItemState extends State<TasksItem> {
                 height: 10,
               ),
               Text(
-                widget.task.description,
+                task.description,
                 style: GoogleFonts.poppins(
                   color: Colors.black,
-                  // color: Colors.white,
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
                 ),
@@ -100,7 +93,7 @@ class _TasksItemState extends State<TasksItem> {
                 child: Row(
                   children: [
                     Text(
-                      widget.task.formattedDate,
+                      task.formattedDate,
                       style: GoogleFonts.poppins(
                         color: Colors.grey[600],
                         fontSize: 12,
@@ -119,9 +112,8 @@ class _TasksItemState extends State<TasksItem> {
                           ),
                         ),
                         onPressed: () {
-                          setState(() {
-                            completed = !completed;
-                          });
+                          final task = widget.task[widget.index];
+                            taskP.addToCompletedTask(task);
                         },
                         child: Text(
                           completed == true ? "Completed" : "Mark as Done",
@@ -144,7 +136,7 @@ class _TasksItemState extends State<TasksItem> {
     );
   }
 
-  Future<dynamic> deleteButton(BuildContext context) {
+  deleteButton(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -166,7 +158,12 @@ class _TasksItemState extends State<TasksItem> {
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Colors.transparent),
               ),
-              onPressed: () {              },
+              onPressed: () {
+                  final taskProv = context.read<TaskProvider>();
+                  final task = widget.task[widget.index];
+                  taskProv.deleteAction(context, task, widget.index);
+
+              },
               child: const Text("Okay"),
             ),
           ],

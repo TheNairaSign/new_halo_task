@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_halo_task/components/alert_dialog.dart';
+import 'package:new_halo_task/models/note_model/note_model.dart';
 import 'package:new_halo_task/notes/colored_container.dart';
-import 'package:new_halo_task/models/note_model.dart';
 import 'package:new_halo_task/themes/themes.dart';
 
 class NotesContainer extends StatefulWidget {
@@ -30,6 +30,22 @@ class _NotesContainerState extends State<NotesContainer> {
     Color(0xff45503B),
     Color(0xffBFD1E5),
     Color(0xffFE5F55),
+  ];
+  List<Color> colorList3 = const [
+    Colors.white,
+    Color(0xfA9E5BB3),
+    Color(0xffFCF6B1),
+    Color(0xffF7B32B),
+    Color(0xffF72C25),
+    Color(0xff2D1E2F),
+  ];
+  List<Color> colorList4 = const [
+    Colors.white,
+    Color(0xff4EFFEF),
+    Color(0xff00A5CF),
+    Color(0xffC1666B),
+    Color(0xffD4B483),
+    Color.fromARGB(255, 147, 240, 212),
   ];
   List<Color> colorList2 = const [
     Colors.white,
@@ -145,11 +161,13 @@ class _NotesContainerState extends State<NotesContainer> {
           fontSize: 20,
           overflow: TextOverflow.visible,
           fontWeight: FontWeight.normal,
+          color: Color.fromARGB(255, 9, 25, 50)
         ),
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.all(5),
           hintTextDirection: TextDirection.ltr,
           hintText: "Hello",
+          
           border: InputBorder.none,
           filled: true,
           fillColor: Colors.transparent,

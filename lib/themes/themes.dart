@@ -35,6 +35,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 
 ThemeData darkTheme = ThemeData.dark().copyWith(
   useMaterial3: true,
+  brightness: Brightness.dark,
   scaffoldBackgroundColor: Colors.black,
   appBarTheme: const AppBarTheme(
     color: Colors.black,

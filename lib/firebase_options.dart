@@ -44,39 +44,37 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCjPSd8CvB04O7HRYVWcFCUmo4LmJ9cP2o',
-    appId: '1:806306911425:web:3baee601bce076253c7040',
-    messagingSenderId: '806306911425',
-    projectId: 'new-halo-task',
-    authDomain: 'new-halo-task.firebaseapp.com',
-    storageBucket: 'new-halo-task.appspot.com',
+    apiKey: 'AIzaSyAlxcsB3heoZw9_IpIs7m_xHDe4y_Ay8-Q',
+    appId: '1:139398389507:web:58ecd6392e02c836511336',
+    messagingSenderId: '139398389507',
+    projectId: 'halo-74f17',
+    authDomain: 'halo-74f17.firebaseapp.com',
+    storageBucket: 'halo-74f17.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC-5-rl-OID1CJbJYfghHw9KX3TsPgvFCw',
-    appId: '1:806306911425:android:28a56a4c38d841993c7040',
-    messagingSenderId: '806306911425',
-    projectId: 'new-halo-task',
-    storageBucket: 'new-halo-task.appspot.com',
+    apiKey: 'AIzaSyDoRn9HFYjRpug9W6T3j76Cc_DqOcT-yu4',
+    appId: '1:139398389507:android:314a38fc73bab256511336',
+    messagingSenderId: '139398389507',
+    projectId: 'halo-74f17',
+    storageBucket: 'halo-74f17.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA2sNqmEK3w2ZdMCHTvCy9a8oRdjLHovWI',
-    appId: '1:806306911425:ios:5f59309c0af5fd203c7040',
-    messagingSenderId: '806306911425',
-    projectId: 'new-halo-task',
-    storageBucket: 'new-halo-task.appspot.com',
-    iosClientId: '806306911425-crjhrnovcnn2li0tp54tj8h2oqa2pdd2.apps.googleusercontent.com',
+    apiKey: 'AIzaSyD539VsESs1i8lozRNIshdP1ziOTeAU4vU',
+    appId: '1:139398389507:ios:d08a44562992a1c5511336',
+    messagingSenderId: '139398389507',
+    projectId: 'halo-74f17',
+    storageBucket: 'halo-74f17.appspot.com',
     iosBundleId: 'com.example.newHaloTask',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA2sNqmEK3w2ZdMCHTvCy9a8oRdjLHovWI',
-    appId: '1:806306911425:ios:a3f86151b28ded023c7040',
-    messagingSenderId: '806306911425',
-    projectId: 'new-halo-task',
-    storageBucket: 'new-halo-task.appspot.com',
-    iosClientId: '806306911425-3j0uvgee069chem4s2h1q5pkue2ss7n4.apps.googleusercontent.com',
+    apiKey: 'AIzaSyD539VsESs1i8lozRNIshdP1ziOTeAU4vU',
+    appId: '1:139398389507:ios:ce298ea6b89cab28511336',
+    messagingSenderId: '139398389507',
+    projectId: 'halo-74f17',
+    storageBucket: 'halo-74f17.appspot.com',
     iosBundleId: 'com.example.newHaloTask.RunnerTests',
   );
 }

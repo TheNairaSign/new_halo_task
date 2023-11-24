@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:new_halo_task/components/alert_dialog.dart';
 import 'package:new_halo_task/models/task_models/task.dart';
+import 'package:new_halo_task/provider/task_provider.dart';
 import 'package:new_halo_task/themes/themes.dart';
 import 'package:new_halo_task/widgets/check_box.dart';
-import 'package:new_halo_task/widgets/text_button.dart';
+import 'package:new_halo_task/widgets/pink_text_button.dart';
+import 'package:provider/provider.dart';
 
 class AddTasksPage extends StatefulWidget {
   const AddTasksPage({super.key, required this.onAddTask});
@@ -29,7 +32,9 @@ class _AddTasksPageState extends State<AddTasksPage> {
         _selectedDate == null) {
       showDialog(
         context: context,
-        builder: (context) => const MyAlertDialog(contentText: "TextFields must not be empty",),
+        builder: (context) => const MyAlertDialog(
+          contentText: "TextFields must not be empty",
+        ),
       );
       return;
     }
@@ -38,7 +43,6 @@ class _AddTasksPageState extends State<AddTasksPage> {
         taskName: taskNameController.text,
         description: taskDescController.text,
         date: _selectedDate!,
-        category: Category.important,
       ),
     );
     Navigator.pop(context);
@@ -70,11 +74,12 @@ class _AddTasksPageState extends State<AddTasksPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: _addTaskModalOverlay(context),
+      body: _addTaskPage(context),
     );
   }
 
-  SingleChildScrollView _addTaskModalOverlay(BuildContext context) {
+  SingleChildScrollView _addTaskPage(BuildContext context) {
+    final taskProvider = context.read<TaskProvider>();
     return SingleChildScrollView(
       child: Container(
         margin: const EdgeInsets.fromLTRB(15, 30, 15, 16),
@@ -122,11 +127,24 @@ class _AddTasksPageState extends State<AddTasksPage> {
             const SizedBox(
               height: 20,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Expanded(
-                  child: CheckedBox(text: "Important",),
+                  child: CheckedBox(
+                    text: "Important",
+                    onChecked: (value) {
+                      setState(() {
+                        debugPrint("Adding to important...");
+                      final importantTasks = taskProvider.enteredTasks.where((task) => task.isImportant).toList();
+                      for (var importantTask in importantTasks) {
+                        importantTask.isImportant = value;
+                        taskProvider.addToImportant(importantTask);
+                      }
+                      });
+                      
+                    },
+                  ),
                 ),
               ],
             ),
@@ -151,9 +169,7 @@ class _AddTasksPageState extends State<AddTasksPage> {
           enabled: false,
           decoration: InputDecoration(
             hintText: "Add Date here",
-            hintStyle: TextStyle(
-              color: Colors.grey[600]
-            ),
+            hintStyle: TextStyle(color: Colors.grey[600]),
             contentPadding: const EdgeInsets.all(10),
             fillColor: Colors.white,
             filled: true,
@@ -163,7 +179,9 @@ class _AddTasksPageState extends State<AddTasksPage> {
                   _selectedDate == null
                       ? "  No Date Selected"
                       : "  ${formatter.format(_selectedDate!)}",
-                      style: const TextStyle(color: Colors.black,),
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
                 const Spacer(),
                 const Icon(
@@ -221,9 +239,7 @@ class _AddTasksPageState extends State<AddTasksPage> {
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: primaryColor
-                ),
+                borderSide: BorderSide(color: primaryColor),
               ),
             ),
           ),
@@ -236,9 +252,6 @@ class _AddTasksPageState extends State<AddTasksPage> {
 Text text(String text) {
   return Text(
     text,
-    style: GoogleFonts.poppins(
-      fontSize: 17,
-      color: primaryColor
-    ),
+    style: GoogleFonts.poppins(fontSize: 17, color: primaryColor),
   );
 }
