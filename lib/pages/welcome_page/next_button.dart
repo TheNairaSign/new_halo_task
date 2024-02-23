@@ -2,7 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:new_halo_task/auth/auth_page.dart';
 import 'package:new_halo_task/models/welcome_pages_model.dart';
 import 'package:new_halo_task/pages/user_login.dart';
 

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:new_halo_task/models/note_model/note_model.dart';
-import 'package:new_halo_task/widgets/my_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
