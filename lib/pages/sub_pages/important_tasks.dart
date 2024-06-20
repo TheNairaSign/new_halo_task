@@ -27,48 +27,53 @@ class _ImportantTasksState extends State<ImportantTasks> {
 
     // Open the Hive box and read tasks
     final taskBox = await Hive.openBox<Task>('tasks');
-    provider.updateTasks(taskBox.values.toList()); // Use the updateTasks method
+    provider.updateTasks(taskBox.values.toList());
   }
 
   @override
   Widget build(BuildContext context) {
-    final taskProvider = context.read<TaskProvider>();
-    final importantTasks = taskProvider.enteredTasks.where((task) => task.isImportant).toList();
+    return Consumer<TaskProvider>(
+      builder: (context, taskProvider, child) {
+        final importantTasks = taskProvider.enteredTasks.where((task) => task.isImportant).toList();
 
-    return Consumer(
-      builder: (context, tasProv, child) => Scaffold(
-        appBar: const MyAppBar(),
-        drawer: const MyDrawer(),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
-                child: Text(
-                  importantTasks.length == 1
-                      ? "You have ${importantTasks.length} important task"
-                      : "You have ${importantTasks.length} important tasks",
-                  style: Theme.of(context).textTheme.headlineMedium,
+        return Scaffold(
+          appBar: const MyAppBar(),
+          drawer: const MyDrawer(),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+                  child: Text(
+                    importantTasks.length == 1
+                        ? "You have ${importantTasks.length} important task"
+                        : "You have ${importantTasks.length} important tasks",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: importantTasks.length,
-                  itemBuilder: (context, index) {
-                    return TasksItem(
-                      importantTasks,
-                      index: index,
-                      removeNote: () {},
-                    );
-                  },
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: importantTasks.length,
+                    itemBuilder: (context, index) {
+                      return TasksItem(
+                        importantTasks,
+                        index: index,
+                        // task: importantTasks[index],
+                        onChecked: (value) {
+                          taskProvider.addToImportant(importantTasks[index], value);
+                        },
+                        removeNote: () {}
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

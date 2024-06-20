@@ -20,7 +20,6 @@ class AddTasksPage extends StatefulWidget {
 
 class _AddTasksPageState extends State<AddTasksPage> {
   final taskNameController = TextEditingController();
-
   final taskDescController = TextEditingController();
 
   DateTime? _selectedDate;
@@ -134,11 +133,12 @@ class _AddTasksPageState extends State<AddTasksPage> {
                     text: "Important",
                     onChecked: (value) {
                       setState(() {
-                        debugPrint("Adding to important...");
+                      //   debugPrint("Adding to important...");
                       final importantTasks = taskProvider.enteredTasks.where((task) => task.isImportant).toList();
                       for (var importantTask in importantTasks) {
-                        importantTask.isImportant = value;
-                        taskProvider.addToImportant(importantTask);
+                        // importantTask.isImportant = value;
+                        // taskProvider.addToImportant(importantTask);
+                    taskProvider.addToImportant(importantTask, value);
                       }
                       });
                       

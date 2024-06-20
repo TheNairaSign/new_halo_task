@@ -13,21 +13,21 @@ class LoginAuth extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            debugPrint("Something went wrong");
-            return const Text("Something went wrong");
+            debugPrint("Something went wrong: ${snapshot.error}");
+            return const Center(child: Text("Something went wrong"));
           }
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             debugPrint("Waiting for connection...");
-            return const CircularProgressIndicator.adaptive();
+            return const Center(child: CircularProgressIndicator.adaptive());
           }
-          // User is logged in
+
           if (snapshot.hasData) {
             debugPrint("User Logged in");
             debugPrint(snapshot.toString());
             return const Dashboard();
-          }
-          // User is not logged in
-          else {
+          } else {
+            debugPrint("User not logged In. Try again");
             return const WelcomePage();
           }
         },

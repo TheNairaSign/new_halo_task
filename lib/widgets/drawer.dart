@@ -21,90 +21,76 @@ class MyDrawer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: double.infinity,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 40, left: 10, bottom: 50),
-                child: Text(
-                  "Halo Task",
-                  style: GoogleFonts.poppins(
-                    color: Colors.teal,
-                    fontSize: 45,
-                    fontWeight: FontWeight.w500,
-                  ),
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 40, left: 10, bottom: 10),
+              child: Text(
+                "Halo Task",
+                style: GoogleFonts.poppins(
+                  color: Colors.teal,
+                  fontSize: 45,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
           ),
-          taskColumn(
-            context,
-            Colors.teal,
-            "Tasks",
-            () {
+          DrawerItem(
+            icon: Icons.format_list_bulleted,
+            text: "Tasks",
+            onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => const Dashboard(),
                 ),
               );
             },
-            Icons.format_list_bulleted,
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TaskCategory(
-                icon: Icons.notifications_none_outlined,
-                text: "Important",
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: ((context) => const ImportantTasks()),
-                    ),
-                  );
-                },
-              ),
-              TaskCategory(
-                icon: Icons.access_time_outlined,
-                text: "Pending",
-                onTap: () {
-                  // print("Pending");
-                },
-              ),
-              TaskCategory(
-                icon: Icons.check,
-                text: "Completed",
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const CompletedTasks(),
-                    ),
-                  );
-                },
-              ),
-            ],
+          TaskCategory(
+            icon: Icons.notifications_none_outlined,
+            text: "Important",
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ImportantTasks(),
+                ),
+              );
+            },
           ),
-          const SizedBox(
-            height: 30,
+          TaskCategory(
+            icon: Icons.access_time_outlined,
+            text: "Pending",
+            onTap: () {
+              // Implement navigation logic for Pending tasks here
+            },
           ),
-          taskColumn(
-            context,
-            Colors.teal,
-            "Notes",
-            () {
-              Navigator.of(context).pop();
+          TaskCategory(
+            icon: Icons.check,
+            text: "Completed",
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const CompletedTasks(),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 30),
+          DrawerItem(
+            icon: Icons.sticky_note_2_outlined,
+            text: "Notes",
+            onTap: () {
+              Navigator.pop(context);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const Notes(),
                 ),
               );
             },
-            Icons.sticky_note_2_outlined,
           ),
           TaskCategory(
             icon: Icons.star_border,
@@ -112,10 +98,11 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               debugPrint("StarredNotes");
               Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const StarredNotes()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const StarredNotes(),
+                ),
+              );
             },
           ),
         ],
@@ -124,45 +111,51 @@ class MyDrawer extends StatelessWidget {
   }
 }
 
-GestureDetector taskColumn(
-  BuildContext context,
-  Color? orange,
-  String text,
-  void Function() onTap,
-  IconData icon,
-) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Padding(
-      padding: const EdgeInsets.only(left: 10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 5, bottom: 5),
-                child: Icon(
-                  icon,
-                  color: orange,
+class DrawerItem extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final VoidCallback onTap;
+
+  const DrawerItem({
+    Key? key,
+    required this.icon,
+    required this.text,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 5, bottom: 5),
+                  child: Icon(
+                    icon,
+                    color: Colors.teal,
+                  ),
                 ),
-              ),
-              Text(
-                text,
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.bodyLarge!.color,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const Divider(
-            thickness: 0.2,
-          ),
-        ],
+              ],
+            ),
+            const Divider(thickness: 0.2),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

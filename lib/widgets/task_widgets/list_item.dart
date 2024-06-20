@@ -7,24 +7,32 @@ import 'package:new_halo_task/provider/task_provider.dart';
 import 'package:new_halo_task/themes/themes.dart';
 
 class TasksItem extends StatefulWidget {
-  const TasksItem(this.task, {super.key, required this.index, required this.removeNote});
+  const TasksItem(
+    this.task, {
+    Key? key,
+    required this.index,
+    required this.removeNote,
+    ValueChanged<bool>? onChecked,
+  })  : onChecked = onChecked ?? _defaultOnChecked,
+        super(key: key);
 
+  static void _defaultOnChecked(bool value) {}
   final List<Task> task;
   final int index;
   final void Function() removeNote;
+  final ValueChanged<bool> onChecked;
 
   @override
   State<TasksItem> createState() => _TasksItemState();
 }
 
 class _TasksItemState extends State<TasksItem> {
-
   @override
   Widget build(BuildContext context) {
-  final task = widget.task[widget.index];
-  final completed = task.isCompleted;
-  final important = task.isImportant;
-  final taskP = context.read<TaskProvider>();
+    final task = widget.task[widget.index];
+    final completed = task.isCompleted;
+    final important = task.isImportant;
+    final taskP = context.read<TaskProvider>();
 
     return SizedBox(
       height: 170,
@@ -51,7 +59,7 @@ class _TasksItemState extends State<TasksItem> {
                   GestureDetector(
                     onTap: () {
                       taskP.deleteAction(context, task, widget.index);
-                    } ,
+                    },
                     child: Icon(
                       Icons.close,
                       color: completed == true ? Colors.black : Colors.grey,
@@ -113,7 +121,7 @@ class _TasksItemState extends State<TasksItem> {
                         ),
                         onPressed: () {
                           final task = widget.task[widget.index];
-                            taskP.addToCompletedTask(task);
+                          taskP.addToCompletedTask(task);
                         },
                         child: Text(
                           completed == true ? "Completed" : "Mark as Done",
@@ -159,10 +167,9 @@ class _TasksItemState extends State<TasksItem> {
                     MaterialStateProperty.all<Color>(Colors.transparent),
               ),
               onPressed: () {
-                  final taskProv = context.read<TaskProvider>();
-                  final task = widget.task[widget.index];
-                  taskProv.deleteAction(context, task, widget.index);
-
+                final taskProv = context.read<TaskProvider>();
+                final task = widget.task[widget.index];
+                taskProv.deleteAction(context, task, widget.index);
               },
               child: const Text("Okay"),
             ),

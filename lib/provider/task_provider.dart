@@ -31,10 +31,17 @@ class TaskProvider extends ChangeNotifier {
     _enteredTasks.addAll(taskBox!.values);
   }
 
-  void addToImportant(Task task) {
-    task.isImportant = !task.isImportant;
+  void addToImportant(Task task, bool isImportant) {
+    task.isImportant = isImportant;
+    updateTaskInHive(task);
     notifyListeners();
   }
+
+   Future<void> updateTaskInHive(Task task) async {
+    final taskBox = await Hive.openBox<Task>('tasks');
+    await taskBox.put(task.key, task);
+  }
+
   void addToCompletedTask(Task task) {
     task.isCompleted = !task.isCompleted;
     notifyListeners();

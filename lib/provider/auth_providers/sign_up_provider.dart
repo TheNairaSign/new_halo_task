@@ -23,37 +23,27 @@ class SignUpProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    super.dispose();
     usernameController.dispose();
     emailController.dispose();
-    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
-  Future<void> storeUserDataInFirestore(String userData) async {
+  Future<void> storeUserDataInFirestore(String userId) async {
     debugPrint("Storing Data in DB...");
     try {
       Map<String, String> userData = {
         'email': email,
         'displayName': userName,
       };
-      _firestore.collection("User").add(userData).then(
-          (DocumentReference doc) =>
-              print('DocumentSnapshot added with ID: ${doc.id}'));
-      // debugPrint("User added");
+      await _firestore.collection("users").doc(userId).set(userData);
+      debugPrint('DocumentSnapshot added with ID: $userId');
     } catch (e) {
       debugPrint('Error storing user data in Firestore: $e');
     }
-    notifyListeners();
-    // Create a new user with a first and last name
-    await _firestore.collection("Users").get().then((event) {
-      for (var doc in event.docs) {
-        print("j${doc.id} => ${doc.data()}");
-      }
-    });
-    notifyListeners();
   }
 
-  Future signUp(BuildContext context) async {
+  Future<void> signUp(BuildContext context) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -65,36 +55,38 @@ class SignUpProvider extends ChangeNotifier {
         await user.updateDisplayName(userName);
         await user.reload();
         user = FirebaseAuth.instance.currentUser;
+        await storeUserDataInFirestore(user!.uid);
       }
 
-      storeUserDataInFirestore(user!.uid);
-    } on FirebaseAuthException catch (e) {
-      debugPrint(e.code);
-    } finally {
       usernameController.clear();
       emailController.clear();
       passwordController.clear();
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UserLoginPage(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Error: ${e.code}');
     }
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const UserLoginPage(),
-      ),
-    );
     notifyListeners();
   }
 
   String? usernameValidator(String? value) {
-    if (value!.length < 3) {
-      return "$value cannot be less than 3";
+    if (value == null || value.isEmpty) {
+      return "Username cannot be empty";
+    }
+    if (value.length < 3) {
+      return "$value cannot be less than 3 characters";
     }
     if (value.contains(RegExp(r"[0-9]"))) {
       return "Username must contain only alphabets";
     }
-    if (value.contains(r"[`~!@#$%^&*()_+=.,/?.,]")) {
+    if (value.contains(RegExp(r"[`~!@#$%^&*()_+=.,/?.,]"))) {
       return "Username must not contain special characters";
     }
-    notifyListeners();
-    return value.toLowerCase().trim();
+    return null;
   }
 }

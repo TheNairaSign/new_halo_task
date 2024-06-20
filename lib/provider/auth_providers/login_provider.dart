@@ -43,7 +43,7 @@ class LoginProvider extends ChangeNotifier {
           contentText: "TextFields cannot be empty",
         ),
       );
-    } else {
+    }
       try {
         showDialog(
           context: context,
@@ -63,7 +63,7 @@ class LoginProvider extends ChangeNotifier {
 
       } on FirebaseAuthException {
         Navigator.of(context).pop();
-        // debugPrint(e.code);
+        debugPrint("FirebaseException on Login");
 
         showAboutDialog(context: context);
 
@@ -79,6 +79,4 @@ class LoginProvider extends ChangeNotifier {
         ),
       );
     }
-    notifyListeners();
   }
-}
