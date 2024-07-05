@@ -1,9 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:new_halo_task/models/note_model/note_model.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:new_halo_task/notes/notes_container.dart';
 import 'package:new_halo_task/provider/note_provider.dart';
@@ -13,6 +13,7 @@ class NoteBuilder extends StatefulWidget {
   const NoteBuilder({
     Key? key,
   }) : super(key: key);
+
   @override
   State<NoteBuilder> createState() => _NoteBuilderState();
 }
@@ -21,13 +22,15 @@ class _NoteBuilderState extends State<NoteBuilder> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
   bool tapped = false;
+  User? _user;
 
   @override
   void initState() {
     super.initState();
-    titleController;
-    bodyController;
-    _loadNotesFromHive();
+    _user = FirebaseAuth.instance.currentUser;
+    if (_user != null) {
+      _loadNotesFromHive();
+    }
   }
 
   @override
@@ -45,10 +48,20 @@ class _NoteBuilderState extends State<NoteBuilder> {
   }
 
   Future<void> _loadNotesFromHive() async {
+    if (_user == null) return;
+
     final provider = context.read<NoteProvider>();
 
-    final noteBox = await Hive.openBox<NoteModel>('notes');
+    // Open the Hive box for the specific user
+    final noteBox = await Hive.openBox<NoteModel>('notes_${_user!.uid}');
     provider.updateNotes(noteBox.values.toList());
+  }
+
+  Future<void> _saveNoteToHive(NoteModel note) async {
+    if (_user == null) return;
+
+    final noteBox = await Hive.openBox<NoteModel>('notes_${_user!.uid}');
+    noteBox.add(note);
   }
 
   @override
@@ -73,6 +86,7 @@ class _NoteBuilderState extends State<NoteBuilder> {
                   onAddNote: (note) {
                     setState(() {
                       noteProvider.addNotes(note);
+                      _saveNoteToHive(note); // Save note to Hive
                     });
                   },
                   titleController: titleController,

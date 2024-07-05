@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:new_halo_task/auth/login_auth_page.dart';
 import 'package:new_halo_task/components/alert_dialog.dart';
 import 'package:new_halo_task/themes/themes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class LoginProvider extends ChangeNotifier {
   final loginEmailController = TextEditingController();
   final loginPasswordController = TextEditingController();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final firebase = FirebaseAuth.instance;
+
 
   String get email => loginEmailController.text.trim();
   String get password => loginPasswordController.text.trim();
@@ -33,6 +38,15 @@ class LoginProvider extends ChangeNotifier {
           )),
     );
     notifyListeners();
+  }
+
+  void logUserActivity(String action) {
+  final String userId = firebase.currentUser!.uid;
+    firestore.collection('user_activity').add({
+      'user_id': userId,
+      'action': action,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
   }
 
   void logIn(BuildContext context) async {
@@ -72,6 +86,9 @@ class LoginProvider extends ChangeNotifier {
         loginEmailController.clear();
         loginPasswordController.clear();
       }
+      
+      logUserActivity('button_click');
+
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(

@@ -1,7 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:new_halo_task/provider/auth_providers/sign_up_provider.dart';
 import 'package:new_halo_task/themes/themes.dart';
 import 'package:new_halo_task/widgets/check_box.dart';
@@ -16,6 +14,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool _isLoading = false;
+
+  void _toggleLoading() {
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<SignUpProvider>(
@@ -42,31 +48,28 @@ class _SignUpPageState extends State<SignUpPage> {
                     textAlign: TextAlign.start,
                     softWrap: true,
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SignUpInputField(
-                    globalKey: signUpProv.globalKey,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 50),
+                  SignUpInputField(globalKey: signUpProv.globalKey),
+                  const SizedBox(height: 20),
                   CheckedBox(
                     text: "Remember Me",
                     onChecked: (value) {},
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  PinkTextButton(
-                    onPressed: () {
-                      signUpProv.signUp(context);
-                    },
-                    buttonContent: "Sign up",
-                  ),
+                  const SizedBox(height: 30),
+                  if (_isLoading)
+                    CircularProgressIndicator(
+                      color: primaryColor,
+                    )
+                  else
+                    PinkTextButton(
+                      onPressed: () async {
+                        _toggleLoading();
+                        await signUpProv.signUp(context);
+                        _toggleLoading();
+                      },
+                      buttonContent: "Sign up",
+                    ),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -78,13 +81,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         onPressed: () => Navigator.of(context).pop(),
                         child: Text(
                           "Login",
-                          style: TextStyle(
-                            color: primaryColor,
-                          ),
+                          style: TextStyle(color: primaryColor),
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
