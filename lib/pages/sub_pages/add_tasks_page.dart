@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:new_halo_task/components/alert_dialog.dart';
 import 'package:new_halo_task/models/task_models/task.dart';
-import 'package:new_halo_task/provider/task_provider.dart';
 import 'package:new_halo_task/themes/themes.dart';
 import 'package:new_halo_task/widgets/check_box.dart';
 import 'package:new_halo_task/widgets/pink_text_button.dart';
-import 'package:provider/provider.dart';
 
 class AddTasksPage extends StatefulWidget {
   const AddTasksPage({super.key, required this.onAddTask});
@@ -21,8 +18,8 @@ class AddTasksPage extends StatefulWidget {
 class _AddTasksPageState extends State<AddTasksPage> {
   final taskNameController = TextEditingController();
   final taskDescController = TextEditingController();
-
   DateTime? _selectedDate;
+  bool _isImportant = false;
 
   void _submitTaskData() {
     if (taskNameController.text.trim().isEmpty ||
@@ -41,6 +38,7 @@ class _AddTasksPageState extends State<AddTasksPage> {
         taskName: taskNameController.text,
         description: taskDescController.text,
         date: _selectedDate!,
+        isImportant: _isImportant, // Set the isImportant property
       ),
     );
     Navigator.pop(context);
@@ -77,7 +75,6 @@ class _AddTasksPageState extends State<AddTasksPage> {
   }
 
   SingleChildScrollView _addTaskPage(BuildContext context) {
-    final taskProvider = context.read<TaskProvider>();
     return SingleChildScrollView(
       child: Container(
         margin: const EdgeInsets.fromLTRB(15, 30, 15, 16),
@@ -133,26 +130,17 @@ class _AddTasksPageState extends State<AddTasksPage> {
                     text: "Important",
                     onChecked: (value) {
                       setState(() {
-                      //   debugPrint("Adding to important...");
-                      final importantTasks = taskProvider.enteredTasks.where((task) => task.isImportant).toList();
-                      for (var importantTask in importantTasks) {
-                        // importantTask.isImportant = value;
-                        // taskProvider.addToImportant(importantTask);
-                    taskProvider.addToImportant(importantTask, value);
-                      }
+                        _isImportant = value; // Update the isImportant state
                       });
-                      
                     },
                   ),
                 ),
               ],
             ),
             PinkTextButton(
-              onPressed: () {
-                _submitTaskData();
-              },
+              onPressed: _submitTaskData,
               buttonContent: "Add Task",
-            )
+            ),
           ],
         ),
       ),
@@ -218,7 +206,6 @@ class _AddTasksPageState extends State<AddTasksPage> {
             style: const TextStyle(
               color: Colors.black,
             ),
-            // onChanged: _saveInput,
             controller: controller,
             cursorColor: primaryColor,
             showCursor: true,

@@ -6,7 +6,7 @@ import 'package:new_halo_task/models/task_models/task.dart';
 import '../themes/themes.dart';
 
 class TaskProvider extends ChangeNotifier {
-  List<Task> enteredTasks = [];
+  List<Task> _enteredTasks = [];
   User? user = FirebaseAuth.instance.currentUser;
   Box<Task>? taskBox;
 
@@ -14,20 +14,20 @@ class TaskProvider extends ChangeNotifier {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       this.user = user;
       if (user != null) {
-        _initHive();
+        initHive();
       } else {
-        enteredTasks.clear();
+        _enteredTasks.clear();
         closeHive();
         notifyListeners();
       }
     });
   }
 
-  Future<void> _initHive() async {
+  Future<void> initHive() async {
     if (user != null) {
       try {
         taskBox = await Hive.openBox<Task>("tasks_${user!.uid}");
-        enteredTasks = taskBox?.values.cast<Task>().toList() ?? [];
+        _enteredTasks = taskBox?.values.cast<Task>().toList() ?? [];
         notifyListeners();
       } catch (e) {
         debugPrint("Error initializing Hive: $e");
@@ -42,15 +42,17 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
+  List<Task> get enteredTasks => _enteredTasks;
+
   void updateTasks(List<Task> tasks) {
-    enteredTasks = tasks;
+    _enteredTasks = tasks;
     notifyListeners();
   }
 
   Future<void> addTask(Task task) async {
     if (user != null) {
       try {
-        enteredTasks.add(task);
+        _enteredTasks.add(task);
         await taskBox?.add(task);
         notifyListeners();
       } catch (e) {
@@ -83,14 +85,22 @@ class TaskProvider extends ChangeNotifier {
   Future<void> removeTasks(Task task) async {
     if (user != null && task.key != null) {
       try {
-        enteredTasks.remove(task);
+        _enteredTasks.remove(task);
         await taskBox?.delete(task.key);
         notifyListeners();
       } catch (e) {
         debugPrint("Error removing task: $e");
-      }
     }
   }
+  }
+
+  
+  void undoDeleteTasks(int index, Task task) {
+    _enteredTasks.insert(index, task);
+    taskBox?.put(index, task);
+    notifyListeners();
+  }
+
 
   void deleteAction(BuildContext context, Task task, int index) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -134,7 +144,7 @@ class TaskProvider extends ChangeNotifier {
 
         if (keysToDelete != null) {
           await taskBox?.deleteAll(keysToDelete);
-          enteredTasks.removeWhere((task) => task.isCompleted);
+          _enteredTasks.removeWhere((task) => task.isCompleted);
           notifyListeners();
         }
       } catch (e) {
@@ -142,10 +152,4 @@ class TaskProvider extends ChangeNotifier {
       }
     }
   }
-
-  void undoDeleteTasks(int index, Task task) {
-    enteredTasks.insert(index, task);
-    taskBox?.put(index, task);
-    notifyListeners();
   }
-}

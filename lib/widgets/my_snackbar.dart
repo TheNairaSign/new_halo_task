@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -16,7 +16,7 @@ class CustomSnackbarContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const svgColor = Color.fromARGB(255, 103, 10, 4);
-    final transparent = MaterialStateProperty.all(Colors.transparent);
+    // final transparent = MaterialStateProperty.all(Colors.transparent);
     return Stack(
       clipBehavior: Clip.none,
       children: [
