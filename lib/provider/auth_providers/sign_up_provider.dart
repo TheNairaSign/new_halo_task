@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:js';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -53,20 +51,20 @@ class SignUpProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> _initializeUserHiveBoxes(User? user) async {
+  Future<void> _initializeUserHiveBoxes(User? user, BuildContext ctx) async {
     if (user != null) {
       try {
         // Initialize task box
         Box<Task> taskBox = await Hive.openBox<Task>("tasks_${user.uid}");
         // You might want to initialize the task provider with the new box
         // Make sure TaskProvider is registered in your provider setup
-        Provider.of<TaskProvider>(context as BuildContext, listen: false).taskBox = taskBox;
+        Provider.of<TaskProvider>(ctx, listen: false).taskBox = taskBox;
 
         // Initialize note box
         Box<NoteModel> noteBox = await Hive.openBox<NoteModel>("notes_${user.uid}");
         // You might want to initialize the note provider with the new box
         // Make sure NoteProvider is registered in your provider setup
-        Provider.of<NoteProvider>(context as BuildContext, listen: false).noteBox = noteBox;
+        Provider.of<NoteProvider>(ctx, listen: false).noteBox = noteBox;
 
         // Notify listeners to update UI or any other necessary actions
         notifyListeners();
@@ -89,7 +87,7 @@ class SignUpProvider extends ChangeNotifier {
         await user.reload();
         await storeUserDataInFirestore(user.uid);
         
-        await _initializeUserHiveBoxes(user);
+        await _initializeUserHiveBoxes(user, context);
       }
 
       // Clear text controllers after successful sign-up

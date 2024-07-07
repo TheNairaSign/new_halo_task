@@ -40,7 +40,7 @@ class _TaskBuilderState extends State<TaskBuilder> {
         builder: (context) => AddTasksPage(
           onAddTask: (task) {
             final adder = context.read<TaskProvider>();
-            adder.addTasks(task);
+            adder.addTask(task);
             _saveTaskToHive(task);
           },
         ),

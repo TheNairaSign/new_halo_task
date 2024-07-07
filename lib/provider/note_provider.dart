@@ -3,61 +3,65 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:new_halo_task/models/note_model/note_model.dart';
 
+import '../themes/themes.dart';
+
 class NoteProvider extends ChangeNotifier {
-  List<NoteModel> _writtenNotes = [];
-  User? user;
-
-  List<NoteModel> get writtenNotes => _writtenNotes;
-
+  List<NoteModel> writtenNotes = [];
+  User? user = FirebaseAuth.instance.currentUser;
   Box<NoteModel>? noteBox;
 
   NoteProvider() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       this.user = user;
       if (user != null) {
-        _initHiveNotes();
+        _initHive();
       } else {
-        _writtenNotes.clear();
-        noteBox?.close();
-        noteBox = null;
+        writtenNotes.clear();
+        closeHive();
         notifyListeners();
       }
     });
   }
 
-  Future<void> _initHiveNotes() async {
+  Future<void> _initHive() async {
     if (user != null) {
       try {
-        noteBox = await Hive.openBox<NoteModel>("notes_${user!.uid}");
-        _writtenNotes = noteBox?.values.toList() ?? [];
+        noteBox = await Hive.openBox<NoteModel>('notes_${user!.uid}');
+        writtenNotes = noteBox?.values.cast<NoteModel>().toList() ?? [];
         notifyListeners();
       } catch (e) {
-        debugPrint("Error initializing Hive for notes: $e");
+        debugPrint("Error initializing Hive: $e");
       }
+    }
+  }
+
+  Future<void> closeHive() async {
+    if (noteBox != null) {
+      await noteBox!.close();
+      noteBox = null;
     }
   }
 
   void updateNotes(List<NoteModel> notes) {
-    _writtenNotes = notes;
+    writtenNotes = notes;
     notifyListeners();
   }
 
-  Future<void> addNotes(NoteModel note) async {
-    if (user != null) {
-      try {
-        await noteBox?.add(note);
-        _writtenNotes.add(note);
-        notifyListeners();
-      } catch (e) {
-        debugPrint("Error adding note: $e");
-      }
-    }
+  void addNotes(NoteModel note) {
+    writtenNotes.add(note);
+    noteBox?.add(note);
+    notifyListeners();
   }
 
-  Future<void> updateNoteInHive(NoteModel note) async {
+  void toggleStar(NoteModel note) {
+    note.isFavorite = !note.isFavorite;
+    updateTaskInHive(note);
+  }
+
+  Future<void> updateTaskInHive(NoteModel note) async {
     if (user != null && note.key != null) {
       try {
-        await note.save();
+        await noteBox?.put(note.key, note);
         notifyListeners();
       } catch (e) {
         debugPrint("Error updating note: $e");
@@ -65,16 +69,16 @@ class NoteProvider extends ChangeNotifier {
     }
   }
 
-  void toggleStar(NoteModel note) {
-    note.isFavorite = !note.isFavorite;
-    updateNoteInHive(note);
+  void removeStarredNotes() {
+    writtenNotes.removeWhere((note) => note.isFavorite);
+    notifyListeners();
   }
 
   Future<void> removeNotes(NoteModel note) async {
     if (user != null && note.key != null) {
       try {
-        _writtenNotes.remove(note);
-        await note.delete();
+        writtenNotes.remove(note);
+        await noteBox?.delete(note.key);
         notifyListeners();
       } catch (e) {
         debugPrint("Error removing note: $e");
@@ -103,7 +107,7 @@ class NoteProvider extends ChangeNotifier {
               child: Text(
                 "Undo",
                 style: TextStyle(
-                  color: Colors.teal,
+                  color: primaryColor,
                 ),
               ),
             ),
@@ -114,30 +118,9 @@ class NoteProvider extends ChangeNotifier {
     removeNotes(note);
   }
 
-  void undoDeleteNotes(int index, NoteModel note) async {
-    if (user != null) {
-      _writtenNotes.insert(index, note);
-      await noteBox?.put(index, note);
-      notifyListeners();
-    }
-  }
-
-  void removeStarredNotes() async {
-    if (user != null) {
-      try {
-        final keysToDelete = noteBox?.keys.where((key) {
-          final note = noteBox?.get(key);
-          return note != null && note.isFavorite;
-        }).toList();
-
-        if (keysToDelete != null && keysToDelete.isNotEmpty) {
-          await noteBox?.deleteAll(keysToDelete);
-          _writtenNotes.removeWhere((note) => note.isFavorite);
-          notifyListeners();
-        }
-      } catch (e) {
-        debugPrint("Error removing starred notes: $e");
-      }
-    }
+  void undoDeleteNotes(int index, NoteModel note) {
+    writtenNotes.insert(index, note);
+    noteBox?.put(index, note);
+    notifyListeners();
   }
 }

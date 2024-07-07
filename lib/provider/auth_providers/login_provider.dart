@@ -6,6 +6,10 @@ import 'package:new_halo_task/auth/login_auth_page.dart';
 import 'package:new_halo_task/components/alert_dialog.dart';
 import 'package:new_halo_task/themes/themes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
+import '../note_provider.dart';
+import '../task_provider.dart';
 
 
 class LoginProvider extends ChangeNotifier {
@@ -25,8 +29,15 @@ class LoginProvider extends ChangeNotifier {
     loginPasswordController;
   }
 
-  void signUserOut() {
+  Future<void> signUserOut(BuildContext ctx) async {
     FirebaseAuth.instance.signOut();
+
+    // Optional: Clear the providers' data manually
+    final taskProvider = Provider.of<TaskProvider>(ctx, listen: false);
+    final noteProvider = Provider.of<NoteProvider>(ctx, listen: false);
+    await taskProvider.closeHive();
+    await noteProvider.closeHive();
+
     notifyListeners();
   }
 

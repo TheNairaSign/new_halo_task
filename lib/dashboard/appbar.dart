@@ -30,7 +30,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.only(left: 10),
             child: IconButton(
               icon: const Icon(Icons.logout),
-              onPressed: () => _.signUserOut(),
+              onPressed: () => _.signUserOut(context),
             ),
           )
         ],

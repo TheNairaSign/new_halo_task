@@ -3,50 +3,55 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:new_halo_task/models/task_models/task.dart';
 
+import '../themes/themes.dart';
+
 class TaskProvider extends ChangeNotifier {
-  List<Task> _enteredTasks = [];
-  User? user;
-
-  List<Task> get enteredTasks => _enteredTasks;
-
+  List<Task> enteredTasks = [];
+  User? user = FirebaseAuth.instance.currentUser;
   Box<Task>? taskBox;
 
   TaskProvider() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       this.user = user;
       if (user != null) {
-        _initHiveTasks();
+        _initHive();
       } else {
-        _enteredTasks.clear();
-        taskBox?.close();
-        taskBox = null;
+        enteredTasks.clear();
+        closeHive();
         notifyListeners();
       }
     });
   }
 
-  Future<void> _initHiveTasks() async {
+  Future<void> _initHive() async {
     if (user != null) {
       try {
         taskBox = await Hive.openBox<Task>("tasks_${user!.uid}");
-        _enteredTasks = taskBox?.values.toList() ?? [];
+        enteredTasks = taskBox?.values.cast<Task>().toList() ?? [];
         notifyListeners();
       } catch (e) {
-        debugPrint("Error initializing Hive for tasks: $e");
+        debugPrint("Error initializing Hive: $e");
       }
     }
   }
 
+  Future<void> closeHive() async {
+    if (taskBox != null) {
+      await taskBox!.close();
+      taskBox = null;
+    }
+  }
+
   void updateTasks(List<Task> tasks) {
-    _enteredTasks = tasks;
+    enteredTasks = tasks;
     notifyListeners();
   }
 
-  Future<void> addTasks(Task task) async {
+  Future<void> addTask(Task task) async {
     if (user != null) {
       try {
+        enteredTasks.add(task);
         await taskBox?.add(task);
-        _enteredTasks.add(task);
         notifyListeners();
       } catch (e) {
         debugPrint("Error adding task: $e");
@@ -57,7 +62,7 @@ class TaskProvider extends ChangeNotifier {
   Future<void> updateTaskInHive(Task task) async {
     if (user != null && task.key != null) {
       try {
-        await task.save();
+        await taskBox?.put(task.key, task);
         notifyListeners();
       } catch (e) {
         debugPrint("Error updating task: $e");
@@ -78,8 +83,8 @@ class TaskProvider extends ChangeNotifier {
   Future<void> removeTasks(Task task) async {
     if (user != null && task.key != null) {
       try {
-        _enteredTasks.remove(task);
-        await task.delete();
+        enteredTasks.remove(task);
+        await taskBox?.delete(task.key);
         notifyListeners();
       } catch (e) {
         debugPrint("Error removing task: $e");
@@ -108,7 +113,7 @@ class TaskProvider extends ChangeNotifier {
               child: Text(
                 "Undo",
                 style: TextStyle(
-                  color: Colors.teal,
+                  color: primaryColor,
                 ),
               ),
             ),
@@ -129,7 +134,7 @@ class TaskProvider extends ChangeNotifier {
 
         if (keysToDelete != null) {
           await taskBox?.deleteAll(keysToDelete);
-          _enteredTasks.removeWhere((task) => task.isCompleted);
+          enteredTasks.removeWhere((task) => task.isCompleted);
           notifyListeners();
         }
       } catch (e) {
@@ -139,8 +144,8 @@ class TaskProvider extends ChangeNotifier {
   }
 
   void undoDeleteTasks(int index, Task task) {
-    _enteredTasks.insert(index, task);
-    taskBox?.put(task.key, task);
+    enteredTasks.insert(index, task);
+    taskBox?.put(index, task);
     notifyListeners();
   }
 }
