@@ -25,8 +25,9 @@ class _ImportantTasksState extends State<ImportantTasks> {
   Future<void> _loadTasksFromHive() async {
     final provider = context.read<TaskProvider>();
 
-    // Ensure the provider's Hive box is properly initialized for the current user
-    await provider.initHive(); // Make sure this is public if you're calling it from outside
+    // Open the Hive box and read tasks
+    final taskBox = await Hive.openBox<Task>('tasks');
+    provider.updateTasks(taskBox.values.toList());
   }
 
   @override
@@ -62,7 +63,7 @@ class _ImportantTasksState extends State<ImportantTasks> {
                         onChecked: (value) {
                           taskProvider.addToImportant(importantTasks[index], value);
                         },
-                        removeNote: () {},
+                        removeNote: () {}
                       );
                     },
                   ),

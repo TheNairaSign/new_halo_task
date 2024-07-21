@@ -6,6 +6,8 @@ import 'package:new_halo_task/models/task_models/task.dart';
 import '../themes/themes.dart';
 
 class TaskProvider extends ChangeNotifier {
+  
+  List<Task> get enteredTasks => _enteredTasks;
   List<Task> _enteredTasks = [];
   User? user = FirebaseAuth.instance.currentUser;
   Box<Task>? taskBox;
@@ -27,7 +29,7 @@ class TaskProvider extends ChangeNotifier {
     if (user != null) {
       try {
         taskBox = await Hive.openBox<Task>("tasks_${user!.uid}");
-        _enteredTasks = taskBox?.values.cast<Task>().toList() ?? [];
+        _enteredTasks = taskBox?.values.toList() ?? [];
         notifyListeners();
       } catch (e) {
         debugPrint("Error initializing Hive: $e");
@@ -42,7 +44,6 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
-  List<Task> get enteredTasks => _enteredTasks;
 
   void updateTasks(List<Task> tasks) {
     _enteredTasks = tasks;
@@ -52,8 +53,8 @@ class TaskProvider extends ChangeNotifier {
   Future<void> addTask(Task task) async {
     if (user != null) {
       try {
-        _enteredTasks.add(task);
         await taskBox?.add(task);
+        _enteredTasks.add(task);
         notifyListeners();
       } catch (e) {
         debugPrint("Error adding task: $e");
@@ -85,22 +86,14 @@ class TaskProvider extends ChangeNotifier {
   Future<void> removeTasks(Task task) async {
     if (user != null && task.key != null) {
       try {
-        _enteredTasks.remove(task);
         await taskBox?.delete(task.key);
+        _enteredTasks.remove(task);
         notifyListeners();
       } catch (e) {
         debugPrint("Error removing task: $e");
+      }
     }
   }
-  }
-
-  
-  void undoDeleteTasks(int index, Task task) {
-    _enteredTasks.insert(index, task);
-    taskBox?.put(index, task);
-    notifyListeners();
-  }
-
 
   void deleteAction(BuildContext context, Task task, int index) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -152,4 +145,10 @@ class TaskProvider extends ChangeNotifier {
       }
     }
   }
+
+  void undoDeleteTasks(int index, Task task) {
+    _enteredTasks.insert(index, task);
+    taskBox?.put(index, task);
+    notifyListeners();
   }
+}

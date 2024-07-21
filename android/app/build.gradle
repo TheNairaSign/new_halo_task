@@ -1,3 +1,14 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    // id 'org.jetbrains.kotlin.android' version '1.6.10' apply false
+    // id 'com.google.gms.google-services' version '4.3.10' apply false
+    // id 'com.google.firebase.crashlytics' version '2.8.1' apply false
+    // id 'com.google.firebase.analytics' version '19.0.0' apply false
+    // id 'com.google.firebase.firebase-perf' version '19.0.10' apply false
+    // id 'com.google.firebase.perf-plugin' version '1.4.1' apply false
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -21,8 +32,7 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
@@ -48,10 +58,11 @@ android {
         applicationId "com.example.new_halo_task"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 23
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -59,8 +70,28 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+            minifyEnabled true
+            shrinkResources true
+            // Enable the below line if you use ProGuard
+            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    signingConfigs {
+        release {
+            def keystorePropertiesFile = rootProject.file("keystore.properties")
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            keyAlias keystoreProperties['MY_KEY_ALIAS']
+            keyPassword keystoreProperties['MY_KEY_PASSWORD']
+            storeFile file(keystoreProperties['MY_KEYSTORE'])
+            storePassword keystoreProperties['MY_STORE_PASSWORD']
+            storeType 'pkcs12' // Specify the keystore type if necessary
+        }
+    }
+
+
 }
 
 flutter {
@@ -70,4 +101,5 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+    implementation 'androidx.multidex:multidex:2.0.1' 
 }
