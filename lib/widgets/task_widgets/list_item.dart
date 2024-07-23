@@ -35,111 +35,115 @@ class _TasksItemState extends State<TasksItem> {
     final important = task.isImportant;
     final taskP = context.read<TaskProvider>();
 
-    return SizedBox(
-      height: 170,
-      child: Card(
-        color: completed == true ? Colors.grey : Colors.white,
-        elevation: completed ? 0 : 2,
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+    return Card(
+      color: completed ? Colors.grey : Colors.white,
+      elevation: completed ? 0 : 2,
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 20,
+          top: 5,
+          right: 5,
+          bottom: 10,
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 20,
-            top: 5,
-            right: 5,
-            bottom: 10,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(context: context, builder: (context) => CustomAlertDialog(content: "Are you sure you wan to delete this task?", onConsent: () {taskP.deleteAction(context, task, widget.index);},));
-                    },
-                    child: Icon(
-                      Icons.close,
-                      color: completed == true ? Colors.black : Colors.grey,
-                      size: 17,
-                    ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => CustomAlertDialog(
+                        content: "Are you sure you want to delete this task?",
+                        onConsent: () {
+                          taskP.deleteAction(context, task, widget.index);
+                        },
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: completed ? Colors.black : Colors.grey,
+                    size: 17,
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 3),
+                  child: Text(
                     task.taskName,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: Colors.teal,
                         ),
                   ),
-                  Icon(
-                    important == true ? Icons.notifications : Icons.pending,
-                    size: 13,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                task.description,
-                style: GoogleFonts.poppins(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
                 ),
+                Icon(
+                  important ? Icons.notifications : Icons.pending,
+                  size: 13,
+                  color: Colors.black,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              task.description,
+              softWrap: true,
+              style: GoogleFonts.poppins(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: Row(
-                  children: [
-                    Text(
-                      task.formattedDate,
-                      style: GoogleFonts.poppins(
-                        color: Colors.grey[600],
-                        fontSize: 12,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Text(
+                  task.formattedDate,
+                  style: GoogleFonts.poppins(
+                    color: Colors.grey[600],
+                    fontSize: 12,
+                  ),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(
+                        completed ? Colors.grey[600] : Colors.transparent,
+                      ),
+                      padding: WidgetStateProperty.all(
+                        const EdgeInsets.all(10),
                       ),
                     ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: OutlinedButton(
-                        style: ButtonStyle(
-                          backgroundColor: completed == true
-                              ? MaterialStateProperty.all(Colors.grey[600])
-                              : MaterialStateProperty.all(Colors.transparent),
-                          padding: MaterialStateProperty.all(
-                            const EdgeInsets.all(10),
-                          ),
-                        ),
-                        onPressed: () {
-                          final task = widget.task[widget.index];
-                          taskP.addToCompletedTask(task);
-                        },
-                        child: Text(
-                          completed == true ? "Completed" : "Mark as Done",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13,
-                          ),
-                        ),
+                    onPressed: () {
+                      final task = widget.task[widget.index];
+                      taskP.addToCompletedTask(task);
+                    },
+                    child: Text(
+                      completed ? "Completed" : "Mark as Done",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        color: primaryColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              )
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -156,7 +160,7 @@ class _TasksItemState extends State<TasksItem> {
                 Navigator.pop(context);
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   Colors.transparent,
                 ),
               ),
@@ -165,7 +169,7 @@ class _TasksItemState extends State<TasksItem> {
             TextButton(
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.transparent),
+                    WidgetStateProperty.all<Color>(Colors.transparent),
               ),
               onPressed: () {
                 final taskProv = context.read<TaskProvider>();

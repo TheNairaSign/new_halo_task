@@ -18,46 +18,46 @@ import 'package:new_halo_task/models/task_models/task.dart';
 import 'package:new_halo_task/provider/auth_providers/login_provider.dart';
 import 'package:new_halo_task/provider/auth_providers/sign_up_provider.dart';
 
+import 'notification/notification_service.dart';
+
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().initNotification();
   await Hive.initFlutter();
 
-  Hive.registerAdapter<Task>(TaskAdapter(), );
+  Hive.registerAdapter<Task>(
+    TaskAdapter(),
+  );
   Hive.registerAdapter<NoteModel>(NoteAdapter());
 
   await Hive.openBox<Task>('tasks');
   await Hive.openBox<NoteModel>('notes');
 
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => TaskProvider()),
-        ChangeNotifierProvider(create: (context) => NoteProvider()),
-        ChangeNotifierProvider(create: (context) => LoginProvider()),
-        ChangeNotifierProvider(create: (context) => SignUpProvider()),
-        ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
-        ChangeNotifierProvider(create: (context) => ToggleScreenProvider()),
-      ],
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => TaskProvider()),
+      ChangeNotifierProvider(create: (context) => NoteProvider()),
+      ChangeNotifierProvider(create: (context) => LoginProvider()),
+      ChangeNotifierProvider(create: (context) => SignUpProvider()),
+      ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
+      ChangeNotifierProvider(create: (context) => ToggleScreenProvider()),
+    ],
     child: const NewHaloTask(),
-    )
-  );
-  
+  ));
 }
 
 class NewHaloTask extends StatelessWidget {
   const NewHaloTask({super.key});
 
   @override
-  Widget build(BuildContext context) {      
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const SafeArea(child: LoginAuth()),
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.dark,
     );
   }
 }

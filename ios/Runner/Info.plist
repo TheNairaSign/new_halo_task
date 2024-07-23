@@ -21,7 +21,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>New Halo Task</string>
+	<string>Halo Task</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -63,5 +63,26 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Enable Notifications -->
+	<key>UIBackgroundModes</key>
+	<array>
+    <string>fetch</string>
+    <string>remote-notification</string>
+	</array>
+	<key>NSUserTrackingUsageDescription</key>
+		<string>We use this identifier to display notifications.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<!-- The end -->
+	
 </dict>
 </plist>

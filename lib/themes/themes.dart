@@ -4,7 +4,6 @@ import 'package:new_halo_task/themes/date_picker_theme.dart';
 Color primaryColor = Colors.pink;
 
 ThemeData lightTheme = ThemeData.light().copyWith(
-  useMaterial3: true,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
     color: Colors.white,
@@ -34,7 +33,6 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 );
 
 ThemeData darkTheme = ThemeData.dark().copyWith(
-  useMaterial3: true,
   brightness: Brightness.dark,
   scaffoldBackgroundColor: Colors.black,
   appBarTheme: const AppBarTheme(

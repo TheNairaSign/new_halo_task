@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="new_halo_task"
+        android:label="Halo Task"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -29,5 +29,15 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.receivers.NotificationReceiver"
+            android:exported="true"/>
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.receivers.DismissedReceiver"
+            android:exported="true"/>
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.receivers.ActionReceiver"
+            android:exported="true"/>
     </application>
 </manifest>

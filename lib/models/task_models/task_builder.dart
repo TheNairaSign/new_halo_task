@@ -7,6 +7,8 @@ import 'package:new_halo_task/pages/sub_pages/add_tasks_page.dart';
 import 'package:new_halo_task/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../notification/notification_service.dart';
+
 class TaskBuilder extends StatefulWidget {
   const TaskBuilder({super.key});
 
@@ -20,10 +22,28 @@ class _TaskBuilderState extends State<TaskBuilder> {
   @override
   void initState() {
     super.initState();
+    scheduleNotifications();
     _user = FirebaseAuth.instance.currentUser;
     if (_user != null) {
       _loadTasksFromHive();
     }
+  }
+
+  void scheduleNotifications() async {
+    await NotificationService().scheduleDailyNotification(
+      0,
+      'Daily Notification',
+      'Hey there, set tasks to start your day',
+      9,
+      0,
+    );
+    await NotificationService().scheduleDailyNotification(
+      1,
+      'Daily Notification',
+      'Hey there, check your tasks to see how your day went',
+      21,
+      0
+    );
   }
 
   void signOut() {

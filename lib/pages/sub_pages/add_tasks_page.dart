@@ -54,7 +54,7 @@ class _AddTasksPageState extends State<AddTasksPage> {
 
   void _datePicker() async {
     final now = DateTime.now();
-    final firstDate = DateTime(now.year - 1, now.month, now.day);
+    final firstDate = DateTime(now.year, now.month, now.day);
     final lastDate = DateTime(now.year + 1, now.month, now.day);
     final pickedDate = await showDatePicker(
       context: context,
@@ -147,6 +147,7 @@ class _AddTasksPageState extends State<AddTasksPage> {
               children: [
                 Expanded(
                   child: CheckedBox(
+                    isImportant: true,
                     text: "Important",
                     onChecked: (value) {
                       setState(() {
@@ -229,10 +230,12 @@ class _AddTasksPageState extends State<AddTasksPage> {
             controller: controller,
             cursorColor: primaryColor,
             showCursor: true,
+            maxLines: null,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
               fillColor: Colors.white,
               filled: true,
+              isDense: true,
               hintText: hint,
               hintStyle: GoogleFonts.poppins(
                 fontWeight: FontWeight.w700,

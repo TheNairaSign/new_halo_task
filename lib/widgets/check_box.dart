@@ -4,9 +4,15 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:new_halo_task/themes/themes.dart';
 
 class CheckedBox extends StatefulWidget {
-  const CheckedBox({super.key, required this.text, required this.onChecked});
+  const CheckedBox({
+    super.key,
+    required this.text,
+    required this.onChecked,
+    this.isImportant = false,
+  });
   final String text;
   final void Function(bool value) onChecked;
+  final bool isImportant;
   @override
   State<CheckedBox> createState() => CheckedBoxState();
 }
@@ -31,8 +37,9 @@ class CheckedBoxState extends State<CheckedBox> {
         title: Text(
           widget.text,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-            fontWeight: FontWeight.normal,
-            ),
+                fontWeight: FontWeight.normal,
+                color: widget.isImportant == true ? Colors.black : null
+              ),
         ),
         onChanged: (value) {
           setState(() {
