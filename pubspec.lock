@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  blurbackground:
+    dependency: "direct main"
+    description:
+      name: blurbackground
+      sha256: "25b435ea7f28391d437899a22a7913d63001709418d5d28f038f3c56a855b915"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   boolean_selector:
     dependency: transitive
     description:

@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:new_halo_task/provider/auth_providers/login_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/custom_alert_dialog.dart.dart';
+
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
 
   @override
@@ -30,7 +32,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.only(left: 10),
             child: IconButton(
               icon: const Icon(Icons.logout),
-              onPressed: () => _.signUserOut(context),
+              onPressed: () {
+                showDialog(context: context, builder: (context) {
+                  return CustomAlertDialog(
+                    content: "Are you sure you wan to sign out?",
+                    onConsent: () => _.signUserOut(context),
+                  );
+                });
+              },
             ),
           )
         ],

@@ -57,6 +57,7 @@ class NewHaloTask extends StatelessWidget {
       home: const SafeArea(child: LoginAuth()),
       theme: lightTheme,
       darkTheme: darkTheme,
+      themeMode: ThemeMode.dark,
     );
   }
 }

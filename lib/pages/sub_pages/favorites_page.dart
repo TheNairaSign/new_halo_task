@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_halo_task/dashboard/appbar.dart';
 import 'package:new_halo_task/provider/note_provider.dart';
-import 'package:new_halo_task/widgets/drawer.dart';
+import 'package:new_halo_task/components/drawer.dart';
 import 'package:new_halo_task/widgets/note_widgets/notesitem.dart';
 import 'package:provider/provider.dart';
 

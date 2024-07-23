@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:new_halo_task/pages/signup_page.dart';
+import 'package:new_halo_task/pages/login/signup_page.dart';
 import 'package:new_halo_task/widgets/text_fields/email_text_field.dart';
 import 'package:new_halo_task/widgets/text_fields/password_text_field.dart';
 import 'package:provider/provider.dart';

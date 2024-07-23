@@ -2,18 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:new_halo_task/provider/auth_providers/sign_up_provider.dart';
+import 'package:provider/provider.dart';
 
 class EmailTextField extends StatelessWidget {
   const EmailTextField({
-    Key? key,
+    super.key,
     required this.emailController,
-  }) : super(key: key);
+  });
   final TextEditingController emailController;
 
   @override
   Widget build(BuildContext context) {
-    return FormBuilderTextField(
-      name: "email-input",
+    return TextFormField(
       controller: emailController,
       enabled: true,
       onChanged: (value) => debugPrint("Email Input"),
@@ -35,7 +36,7 @@ class EmailTextField extends StatelessWidget {
           color: Colors.grey[600],
         ),
         filled: true,
-         border: OutlineInputBorder(
+        border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
@@ -51,11 +52,18 @@ class EmailTextField extends StatelessWidget {
           ),
         ),
       ),
-      validator: FormBuilderValidators.compose(
-        [
-          FormBuilderValidators.email(),
-        ],
-      ),
+      validator: (value) {
+        final signUpProv = context.read<SignUpProvider>();
+        if (value == null || value.isEmpty) {
+            return 'Please enter an email';
+          } else if (!signUpProv.isValidEmail(value)) {
+            return 'Please enter a valid email';
+          }
+          return null;
+      },
+      onSaved: (newValue) {
+        newValue = "";
+      },
     );
   }
 }

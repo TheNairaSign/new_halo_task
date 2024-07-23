@@ -25,7 +25,7 @@ class _SignUpInputFieldState extends State<SignUpInputField> {
     return Consumer<SignUpProvider>(
       builder: (context, signUpProv, child) {
         return SizedBox(
-          height: 210,
+          height: 250,
           child: Form(
             key: widget.globalKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,

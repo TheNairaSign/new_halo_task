@@ -118,15 +118,24 @@ class SignUpProvider extends ChangeNotifier {
     if (value == null || value.isEmpty) {
       return "Username cannot be empty";
     }
-    if (value.length < 3) {
+    else if (value.length < 3) {
       return "Username must be at least 3 characters long";
     }
-    if (value.contains(RegExp(r'[0-9]'))) {
+    else if (value.contains(RegExp(r'[0-9]'))) {
       return "Username must contain only alphabets";
     }
-    if (value.contains(RegExp(r'[`~!@#$%^&*()_+=.,/?.,]'))) {
+    else if (value.contains(RegExp(r'[`~!@#$%^&*()_+=.,/?.,]'))) {
       return "Username must not contain special characters";
     }
-    return null;
+    else  {
+      return null;
+    }
   }
+  
+  bool isValidEmail(String email) {
+  final emailRegex = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  );
+  return emailRegex.hasMatch(email);
+}
 }

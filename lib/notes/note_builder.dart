@@ -11,8 +11,8 @@ import 'package:new_halo_task/widgets/note_widgets/notesitem.dart';
 
 class NoteBuilder extends StatefulWidget {
   const NoteBuilder({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<NoteBuilder> createState() => _NoteBuilderState();

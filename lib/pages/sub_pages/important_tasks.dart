@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:new_halo_task/dashboard/appbar.dart';
 import 'package:new_halo_task/provider/task_provider.dart';
-import 'package:new_halo_task/widgets/drawer.dart';
+import 'package:new_halo_task/components/drawer.dart';
 import 'package:new_halo_task/widgets/task_widgets/list_item.dart';
 
 class ImportantTasks extends StatefulWidget {

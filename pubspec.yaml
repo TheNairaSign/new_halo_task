@@ -56,6 +56,7 @@ dependencies:
   googleapis: ^13.2.0
   googleapis_auth: ^1.4.1
   material: ^1.0.0+2
+  blurbackground: ^0.0.2
   # flutter_facebook_auth: ^6.0.1
 
 dev_dependencies:

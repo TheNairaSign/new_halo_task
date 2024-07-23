@@ -26,35 +26,11 @@ class _NotesContainerState extends State<NotesContainer> {
   Color containerColor = Colors.white; // Set an initial color
   List<Color> colorList = const [
     Colors.white,
-    Color(0xffEEEBD3),
-    Color(0xff45503B),
-    Color(0xffBFD1E5),
-    Color(0xffFE5F55),
-  ];
-  List<Color> colorList3 = const [
-    Colors.white,
-    Color(0xfA9E5BB3),
     Color(0xffFCF6B1),
-    Color(0xffF7B32B),
-    Color(0xffF72C25),
-    Color(0xff2D1E2F),
-  ];
-  List<Color> colorList4 = const [
-    Colors.white,
     Color(0xff4EFFEF),
-    Color(0xff00A5CF),
-    Color(0xffC1666B),
-    Color(0xffD4B483),
-    Color.fromARGB(255, 147, 240, 212),
+    Color(0xfff7af9d),
+    Color(0xfAe2a0ff),
   ];
-  List<Color> colorList2 = const [
-    Colors.white,
-    Color.fromARGB(255, 243, 229, 107),
-    Color.fromARGB(190, 32, 176, 162),
-    Color.fromARGB(162, 239, 88, 139),
-    Color.fromARGB(255, 104, 141, 204),
-  ];
-
   void onAdd() {
     if (widget.titleController.text.isEmpty || widget.bodyController.text.isEmpty) {
       showDialog(context: context, builder: (context) {
@@ -163,11 +139,15 @@ class _NotesContainerState extends State<NotesContainer> {
           fontWeight: FontWeight.normal,
           color: Color.fromARGB(255, 9, 25, 50)
         ),
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.all(5),
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(5),
           hintTextDirection: TextDirection.ltr,
-          hintText: "Hello",
-          
+          hintText: "Write here...",
+          hintStyle: TextStyle(
+                color: Colors.grey[900]!.withOpacity(0.5),
+                fontWeight: FontWeight.normal,
+                fontSize: 20,
+              ),
           border: InputBorder.none,
           filled: true,
           fillColor: Colors.transparent,

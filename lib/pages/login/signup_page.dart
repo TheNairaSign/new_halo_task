@@ -43,7 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 45,
                           fontWeight: FontWeight.w500,
                           color:
-                              Theme.of(context).textTheme.headlineLarge!.color,
+                          Theme.of(context).textTheme.headlineLarge!.color,
                         ),
                     textAlign: TextAlign.start,
                     softWrap: true,

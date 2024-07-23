@@ -6,13 +6,15 @@ import 'package:provider/provider.dart';
 import 'package:new_halo_task/models/note_model/note_model.dart';
 import 'package:new_halo_task/provider/note_provider.dart';
 
+import '../custom_alert_dialog.dart.dart';
+
 class NotesItem extends StatefulWidget {
   const NotesItem({
-    Key? key,
+    super.key,
     required this.notes,
     required this.index,
     required this.removeNote,
-  }) : super(key: key);
+  });
   final List<NoteModel> notes;
   final int index;
   final void Function() removeNote;
@@ -72,7 +74,7 @@ class _NotesItemState extends State<NotesItem> {
               // const Spacer(),
               GestureDetector(
                 onTap: () {
-                  widget.removeNote();
+                  showDialog(context: context, builder: (context) => CustomAlertDialog(content: "Are you sure you wan to delete this task?", onConsent: () {widget.removeNote();},),);
                 },
                 child: Icon(
                   Icons.close,

@@ -6,23 +6,15 @@ import 'package:provider/provider.dart';
 
 class UsernameTextField extends StatelessWidget {
   const UsernameTextField({
-    Key? key,
+    super.key,
     required this.usernameController,
-  }) : super(key: key);
+  });
   final TextEditingController usernameController;
 
   @override
   Widget build(BuildContext context) {
-      String? textValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Username is required';
-    }
-    return null;
-  }
-    final _ = context.read<SignUpProvider>();
 
-    return FormBuilderTextField(
-      name: "username-input",
+    return TextFormField(
       controller: usernameController,
       enabled: true,
       onChanged: (value) => debugPrint("Username Input"),
@@ -44,7 +36,7 @@ class UsernameTextField extends StatelessWidget {
           color: Colors.grey[600],
         ),
         filled: true,
-         border: OutlineInputBorder(
+        border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
@@ -60,9 +52,12 @@ class UsernameTextField extends StatelessWidget {
           ),
         ),
       ),
-      validator: textValidator,
-        onSaved: (value) {
-          value = "";
+      validator: (value) {
+        final snp = context.read<SignUpProvider>();
+        return snp.usernameValidator(value);
+      },
+      onSaved: (value) {
+        value = "";
         }
     );
   }

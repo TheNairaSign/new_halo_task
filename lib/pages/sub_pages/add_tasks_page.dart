@@ -1,3 +1,4 @@
+import 'package:blurbackground/blurbackground.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_halo_task/components/alert_dialog.dart';
@@ -54,12 +55,31 @@ class _AddTasksPageState extends State<AddTasksPage> {
   void _datePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
-    final lastDate = now;
+    final lastDate = DateTime(now.year + 1, now.month, now.day);
     final pickedDate = await showDatePicker(
       context: context,
+      currentDate: now,
       initialDate: now,
       firstDate: firstDate,
       lastDate: lastDate,
+      builder: (BuildContext context, Widget? child) {
+        return BlurBackground(
+          blurX: 10,
+          blurY: 10,
+          child: Theme(
+            data: ThemeData.light().copyWith(
+              colorScheme: const ColorScheme.highContrastDark(
+                primary: Colors.pink, // Header background color
+                onPrimary: Colors.black, // Header text color
+                onSurface: Colors.white, // Body text color
+
+              ),
+              dialogBackgroundColor: Colors.teal, // Background color
+            ),
+            child: child!,
+          ),
+        );
+      },
     );
     setState(() {
       _selectedDate = pickedDate;

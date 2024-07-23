@@ -5,9 +5,9 @@ import 'package:new_halo_task/themes/themes.dart';
 
 class PasswordTextField extends StatefulWidget {
   const PasswordTextField({
-    Key? key,
+    super.key,
     required this.passwordController,
-  }) : super(key: key);
+  });
   final TextEditingController passwordController;
 
   @override
@@ -19,8 +19,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return FormBuilderTextField(
-      name: "password-textfield",
+    return TextFormField(
       controller: widget.passwordController,
       onChanged: (value) => debugPrint("Password Input"),
       enabled: true,
@@ -75,6 +74,18 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           ),
         ),
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Please enter a password";
+        }
+        else if (value.length < 6) {
+          return 'Password must be at least 6 characters long';
+          }
+        return null;
+      },
+      onSaved: (newValue) {
+        newValue = "";
+      },
     );
   }
 }

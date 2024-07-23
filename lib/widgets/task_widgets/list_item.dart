@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:new_halo_task/widgets/custom_alert_dialog.dart.dart';
 import 'package:provider/provider.dart';
 
 import 'package:new_halo_task/models/task_models/task.dart';
@@ -58,7 +59,7 @@ class _TasksItemState extends State<TasksItem> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      taskP.deleteAction(context, task, widget.index);
+                      showDialog(context: context, builder: (context) => CustomAlertDialog(content: "Are you sure you wan to delete this task?", onConsent: () {taskP.deleteAction(context, task, widget.index);},));
                     },
                     child: Icon(
                       Icons.close,

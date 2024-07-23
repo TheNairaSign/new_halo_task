@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:new_halo_task/dashboard/appbar.dart';
 import 'package:new_halo_task/models/task_models/task_builder.dart';
-import 'package:new_halo_task/widgets/drawer.dart';
+import 'package:new_halo_task/components/drawer.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

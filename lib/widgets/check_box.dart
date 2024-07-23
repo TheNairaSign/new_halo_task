@@ -10,16 +10,17 @@ class CheckedBox extends StatefulWidget {
   @override
   State<CheckedBox> createState() => CheckedBoxState();
 }
+
 class CheckedBoxState extends State<CheckedBox> {
   bool tapped = false;
   @override
   Widget build(BuildContext context) {
     return FormBuilderCheckbox(
-      name: "",
+        name: "",
         contentPadding: const EdgeInsets.only(left: 70, right: 0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
-          ),
+        ),
         side: BorderSide(
           color: primaryColor,
           width: 2,
@@ -29,7 +30,9 @@ class CheckedBoxState extends State<CheckedBox> {
         checkColor: Colors.white,
         title: Text(
           widget.text,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color:Colors.black),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            fontWeight: FontWeight.normal,
+            ),
         ),
         onChanged: (value) {
           setState(() {
